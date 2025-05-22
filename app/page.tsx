@@ -1,103 +1,306 @@
+'use client'
+
+import React from "react";
 import Image from "next/image";
+import { Button } from "./components/ui/button";  
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+  CardDescription,
+} from "./components/ui/card";
+import { motion } from "framer-motion";
+//import { TextWithLink } from "./components/TextWithLink";
 
-export default function Home() {
+// Dummy image imports (replace with your actual image paths)
+const coverImage = "/images/ibs website2.jpg";
+const ubdteamImage = "/images/Ubdteam.png";
+const serviceImage = "/images/web10.jbg";
+const ibsLogo = "/images/logo.png";
+
+// Interface for Navbar button data
+interface NavbarButton {
+  label: string;
+  href: string;
+}
+
+// Interface for Cover component props
+interface CoverProps {
+  imageUrl: string;
+  text: string;
+}
+
+
+
+// Interface for ImageSection component props
+interface ImageSectionProps {
+  imageUrl: string;
+  altText: string;
+  title?: string;
+  description?: string;
+}
+
+// Interface for AboutUs component props
+interface AboutUsProps {
+  text: string;
+  imageUrl: string;
+}
+
+// Navbar Component
+const Navbar: React.FC<{ buttons: NavbarButton[] }> = ({ buttons }) => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <nav
+      className={cn(
+        'sticky top-0 z-50',
+        'bg-background border-b border-border',
+        'py-4 px-6 md:px-8 lg:px-12',
+        'flex items-center justify-between',
+        'shadow-sm',
+      )}
+    >
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className="flex items-center gap-2">
+        {/* Use the Image component for the logo */}
+        <Image
+          src={ibsLogo}
+          alt="IBS Logo"
+          width={30}  // Adjust size as needed
+          height={30}
+          className="rounded-full" // Make it a circle if appropriate
+        />
+
+        <span className="font-bold text-xl text-foreground">IBS</span>
+      </div>
+
+      <div className="space-x-4 md:space-x-6 lg:space-x-8 flex items-center">
+        {buttons.map((button) => (
+          <Button
+            key={button.label}
+            variant="ghost"
+            asChild
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+            <a href={button.href} className="hover:text-primary transition-colors">
+              {button.label}
+            </a>
+          </Button>
+        ))}
+      </div>
+    </nav>
+  );
+};
+
+// Cover Component
+const Cover: React.FC<CoverProps> = ({ imageUrl, text }) => {
+  return (
+    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+      <Image
+        src={imageUrl}
+        alt="Cover Image"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      <div
+        className={cn(
+          'absolute inset-0 bg-black/30',
+          'flex items-center justify-center',
+        )}
+      />
+
+      <motion.div initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        className="relative z-10 text-center text-white p-4 md:p-8"
+      >
+        <h1
+          className={cn(
+            'text-3xl md:text-4xl lg:text-5xl font-bold',
+            'drop-shadow-lg',
+          )}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {text}
+        </h1>
+      </motion.div>
     </div>
   );
-}
+};
+
+// ImageSection Component
+const ImageSection: React.FC<ImageSectionProps> = ({ imageUrl, altText, title, description }) => {
+  return (
+    <div className="my-8">
+      {title && <h2 className="text-2xl font-semibold mb-2 text-foreground">{title}</h2>}
+      {description && <p className="text-gray-500 mb-4">{description}</p>}
+      
+      <Image
+        src={imageUrl}
+        alt={altText}
+        className="w-full rounded-lg shadow-lg"
+      />
+    </div>
+  );
+};
+
+// AboutUs Component
+const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
+  return (
+    <div className="py-8 flex flex-col md:flex-row items-center gap-8">
+
+      <div className="md:w-1/2">
+        
+        <h2 className={cn(
+          'text-2xl font-semibold mb-4',
+          'text-foreground',
+        )}
+        >
+          About Us
+        </h2>
+
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+          {text}
+        </p>
+
+      </div>
+
+      <div className="md:w-1/2">
+        
+        <Image
+          src={imageUrl}
+          alt="About Us"
+          className="w-full rounded-lg shadow-lg"
+        >
+        </Image>
+      </div>
+    </div>
+  );
+};
+
+// our sevice
+const OurService = () => {
+  return (
+    <div className="py-8">
+
+      <h2 className="text-2xl font-semibold mb-8 text-center text-foreground"> Our Services </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Sotial Insurance</CardTitle>
+            <CardDescription>Describtion of Sotial Insurance service.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Details about the sevice.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Taxes</CardTitle>
+            <CardDescription>Description of Tax services.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Details about tax services.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Payroll</CardTitle>
+            <CardDescription>Description of Payroll services.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Payroll service details.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Financial Audit</CardTitle>
+            <CardDescription>Description of Financial Audit services.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Financial Audit service details.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Zakat</CardTitle>
+            <CardDescription>Description of Zakat services.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Zakat service details.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Consulting</CardTitle>
+            <CardDescription>Description of Consulting services.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>Consulting service details.</p>
+          </CardContent>
+          <CardFooter>
+            <Button>Learn More</Button>
+          </CardFooter>
+        </Card>
+
+      </div>
+    </div>
+  );
+};
+
+// Main Home Component
+const Home: React.FC = () => {
+  const NavbarButtons: NavbarButton[] = [
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: 'About Us', href: '/about-us' },
+    { label: 'Contact', href: '/contact' },
+  ];
+
+  return (
+    <div className="bg-background min-h-screen">
+      <Navbar buttons={NavbarButtons} />
+      <Cover imageUrl={coverImage} text="WE ASSIST YOU TO SUCCEED" />
+
+      <div
+        className={cn(
+          'container mx-auto py-8 px-4 md:px-6 lg:px-8',
+        )}
+      >
+        <AboutUs text="IBS is a leading professional services firm providing a comprehensive range of solutions in Social Insurance, Taxes, Zakat, Financial Audit, and Consulting.  With a commitment to excellence and a client-centric approach, we deliver tailored solutions to meet the unique needs of businesses."
+          imageUrl={ubdteamImage} />
+        
+        <OurService />
+
+        <ImageSection
+          imageUrl={serviceImage}
+          altText="Our Services"
+          title="Our Services"
+          description="We offer a wide range of services to help your business succeed. " />
+      </div>
+    </div>
+  );
+};
+
+export default Home;
