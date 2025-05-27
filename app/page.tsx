@@ -23,7 +23,6 @@ declare global {
   }
 }
 
-
 // Dummy image imports (replace with your actual image paths)
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
 const ubdteamImage = "/images/updatedTeam.jpg"; // This should be the image of the team
