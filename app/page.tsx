@@ -316,7 +316,6 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
   const [currentIndex, setCurrentIndex] = useState(0);  // State to track the first visible logo
 
   // Determine how many logos to show at once based on screen size
-  // This is a simplified example; for robust responsiveness, you might use a ref and measure width
   const getLogosPerPage = () => {
     if (typeof window === 'undefined') return 3;  // Default for SSR
     if (window.innerWidth >= 1024) return 6;  // lg breakpoint
@@ -328,6 +327,17 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
   const logosPerPage = getLogosPerPage();
   const totalLogos = clientLogos.length;
 
+  // Add useEffect for auto-scrolling
+  useEffect(() => {
+    if (!seeAll) {  // Only auto-scroll when not in "see all" mode
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % totalLogos);
+      }, 500);  // Change slide every 3 seconds
+
+      return () => clearInterval(interval);  // Cleanup on unmount
+    }
+  }, [seeAll, totalLogos]);
+
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % totalLogos);
   };
@@ -337,9 +347,8 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
   };
 
   // Prepare logos for display, looping them if necessary for smooth transitions
-  // We'll show enough logos to fill the view plus a few more for smooth sliding
   const displayedLogos = [];
-  for (let i = 0; i < totalLogos + logosPerPage; i++){  // Add extra logos for seamless transition
+  for (let i = 0; i < totalLogos + logosPerPage; i++) {
     displayedLogos.push(clientLogos[(currentIndex + i) % totalLogos]);
   }
   
@@ -350,73 +359,70 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
               // Display all logos in a responsive grid
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
                   {clientLogos.map((logo, index) => (
-                      // Corrected width/height classes to be valid Tailwind or explicit
                       <div key={`full-logo-${index}`} className="relative w-[100px] h-[100px] ">
                           <Image
                               src={logo}
                               alt={`Client Logo ${index + 1}`}
-                        width={100}
-                        height={100}
-                              //fill={true}
+                              width={100}
+                              height={100}
                               style={{ objectFit: 'contain' }}
                           />
                       </div>
                   ))}
               </div>
           ) : (
-              // Display logos with arrow navigation
-          <div className="relative w-full overflow-hidden py-4">
-            
+              // Display logos with auto-scrolling
+              <div className="relative w-full overflow-hidden py-4">
                   <div className="flex items-center justify-center"> 
                       {/* Previous Button */}
-              <Button
-                variant="ghost"
-                className="p-2 mr-2 text-[#000000] text-4xl"
-                onClick={handlePrev}
-                aria-label="Previous client logo"
-              >
-                &#8249; {/* Left arrow HTML entity */}
-              </Button>
+                      <Button
+                          variant="ghost"
+                          className="p-2 mr-2 text-[#000000] text-4xl"
+                          onClick={handlePrev}
+                          aria-label="Previous client logo"
+                      >
+                          &#8249;
+                      </Button>
 
-              {/* Logos Container */}
-              <div className="flex flex-grow overflow-hidden">
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentIndex * 164}px)` }}  // Fixed template literal and adjusted width calculation
-                >
-                  {clientLogos.map((logo, index) => (
-                    <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
-                      <Image
-                        src={logo}
-                        alt={`Client Logo ${index + 1}`}
-                        width={100}
-                        height={100}
-                        style={{ objectFit: 'contain' }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+                      {/* Logos Container */}
+                      <div className="flex flex-grow overflow-hidden">
+                          <div
+                              className="flex transition-transform duration-500 ease-in-out"
+                              style={{ transform: `translateX(-${currentIndex * 164}px)` }}
+                          >
+                              {clientLogos.map((logo, index) => (
+                                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
+                                      <Image
+                                          src={logo}
+                                          alt={`Client Logo ${index + 1}`}
+                                          width={100}
+                                          height={100}
+                                          style={{ objectFit: 'contain' }}
+                                      />
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
             
-            {/* Next Button */}
-            <Button
-                variant="ghost"
-                className="p-2 mr-2 text-[#000000] text-4xl"
-                onClick={handleNext}
-                aria-label="Next client logo"
-              >
-                &#8250; {/* Right arrow HTML entity */}
-              </Button>
-            </div>
-            </div>
+                      {/* Next Button */}
+                      <Button
+                          variant="ghost"
+                          className="p-2 mr-2 text-[#000000] text-4xl"
+                          onClick={handleNext}
+                          aria-label="Next client logo"
+                      >
+                          &#8250;
+                      </Button>
+                  </div>
+              </div>
           )}
 
           {/* Single Toggle Button for "SEE ALL" / "SHOW FEWER" */}
           <div className="text-center mt-13">
               <Button
-                  variant={seeAll ? "outline" : "default"} // Change variant based on state
-                  className="px-8 py-3 text-lg font-semibold" // Text color will be handled by the Button component's variant logic
-                  onClick={() => setShowAll(!seeAll)} // Toggle the state
+                  variant={seeAll ? "outline" : "default"}
+                  className="px-8 py-3 text-lg font-semibold"
+                  onClick={() => setShowAll(!seeAll)}
               >
                   {seeAll ? "SHOW FEWER CLIENTS" : "SEE ALL CLIENTS"}
               </Button>
