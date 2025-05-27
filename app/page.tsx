@@ -311,123 +311,116 @@ const OurServices = () => {
   );
 };
 
-// OurClients Component - Modified to conditionally show all or loop, and includes its own SINGLE toggle button
+// OurClients Component - Modified to create a seamless infinite loop effect for the logos
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);  // State to track the first visible logo
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Determine how many logos to show at once based on screen size
   const getLogosPerPage = () => {
-    if (typeof window === 'undefined') return 3;  // Default for SSR
-    if (window.innerWidth >= 1024) return 6;  // lg breakpoint
-    if (window.innerWidth >= 768) return 4;  // md breakpoint
-    if (window.innerWidth >= 640) return 3;  // sm breakpoint
-    return 2; // default for small screens
+    if (typeof window === 'undefined') return 3;
+    if (window.innerWidth >= 1024) return 6;
+    if (window.innerWidth >= 768) return 4;
+    if (window.innerWidth >= 640) return 3;
+    return 2;
   };
 
-  const logosPerPage = getLogosPerPage();
   const totalLogos = clientLogos.length;
 
-  // Add useEffect for auto-scrolling
-  useEffect(() => {
-    if (!seeAll) {  // Only auto-scroll when not in "see all" mode
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % totalLogos);
-      }, 500);  // Change slide every 3 seconds
+  // Create a duplicated array for seamless looping
+  const duplicatedLogos = [...clientLogos, ...clientLogos, ...clientLogos];
 
-      return () => clearInterval(interval);  // Cleanup on unmount
+  useEffect(() => {
+    if (!seeAll) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => {
+          // When we reach the end of the first set, continue to the second set
+          // This creates the illusion of infinite scroll
+          return prevIndex + 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
     }
-  }, [seeAll, totalLogos]);
+  }, [seeAll]);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalLogos);
+    setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalLogos) % totalLogos);
+    setCurrentIndex((prevIndex) => prevIndex - 1);
   };
 
-  // Prepare logos for display, looping them if necessary for smooth transitions
-  const displayedLogos = [];
-  for (let i = 0; i < totalLogos + logosPerPage; i++) {
-    displayedLogos.push(clientLogos[(currentIndex + i) % totalLogos]);
-  }
-  
   return (
-      <div className="py-8">
-          <h2 className="text-2xl font-semibold mb-8 text-left text-[#ed253c]">OUR CLIENTS</h2>
-          {seeAll ? (
-              // Display all logos in a responsive grid
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
-                  {clientLogos.map((logo, index) => (
-                      <div key={`full-logo-${index}`} className="relative w-[100px] h-[100px] ">
-                          <Image
-                              src={logo}
-                              alt={`Client Logo ${index + 1}`}
-                              width={100}
-                              height={100}
-                              style={{ objectFit: 'contain' }}
-                          />
-                      </div>
-                  ))}
-              </div>
-          ) : (
-              // Display logos with auto-scrolling
-              <div className="relative w-full overflow-hidden py-4">
-                  <div className="flex items-center justify-center"> 
-                      {/* Previous Button */}
-                      <Button
-                          variant="ghost"
-                          className="p-2 mr-2 text-[#000000] text-4xl"
-                          onClick={handlePrev}
-                          aria-label="Previous client logo"
-                      >
-                          &#8249;
-                      </Button>
+    <div className="py-8">
+      <h2 className="text-2xl font-semibold mb-8 text-left text-[#ed253c]">OUR CLIENTS</h2>
+      {seeAll ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
+          {clientLogos.map((logo, index) => (
+            <div key={`full-logo-${index}`} className="relative w-[100px] h-[100px]">
+              <Image
+                src={logo}
+                alt={`Client Logo ${index + 1}`}
+                width={100}
+                height={100}
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="relative w-full overflow-hidden py-4">
+          <div className="flex items-center justify-center">
+            <Button
+              variant="ghost"
+              className="p-2 mr-2 text-[#000000] text-4xl"
+              onClick={handlePrev}
+              aria-label="Previous client logo"
+            >
+              &#8249;
+            </Button>
 
-                      {/* Logos Container */}
-                      <div className="flex flex-grow overflow-hidden">
-                          <div
-                              className="flex transition-transform duration-500 ease-in-out"
-                              style={{ transform: `translateX(-${currentIndex * 164}px)` }}
-                          >
-                              {clientLogos.map((logo, index) => (
-                                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
-                                      <Image
-                                          src={logo}
-                                          alt={`Client Logo ${index + 1}`}
-                                          width={100}
-                                          height={100}
-                                          style={{ objectFit: 'contain' }}
-                                      />
-                                  </div>
-                              ))}
-                          </div>
-                      </div>
-            
-                      {/* Next Button */}
-                      <Button
-                          variant="ghost"
-                          className="p-2 mr-2 text-[#000000] text-4xl"
-                          onClick={handleNext}
-                          aria-label="Next client logo"
-                      >
-                          &#8250;
-                      </Button>
-                  </div>
-              </div>
-          )}
-
-          {/* Single Toggle Button for "SEE ALL" / "SHOW FEWER" */}
-          <div className="text-center mt-13">
-              <Button
-                  variant={seeAll ? "outline" : "default"}
-                  className="px-8 py-3 text-lg font-semibold"
-                  onClick={() => setShowAll(!seeAll)}
+            <div className="flex flex-grow overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * 164}px)` }}
               >
-                  {seeAll ? "SHOW FEWER CLIENTS" : "SEE ALL CLIENTS"}
-              </Button>
+                {duplicatedLogos.map((logo, index) => (
+                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
+                    <Image
+                      src={logo}
+                      alt={`Client Logo ${index + 1}`}
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'contain' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Button
+              variant="ghost"
+              className="p-2 mr-2 text-[#000000] text-4xl"
+              onClick={handleNext}
+              aria-label="Next client logo"
+            >
+              &#8250;
+            </Button>
           </div>
+        </div>
+      )}
+
+      <div className="text-center mt-13">
+        <Button
+          variant={seeAll ? "outline" : "default"}
+          className="px-8 py-3 text-lg font-semibold"
+          onClick={() => setShowAll(!seeAll)}
+        >
+          {seeAll ? "SHOW FEWER CLIENTS" : "SEE ALL CLIENTS"}
+        </Button>
       </div>
+    </div>
   );
 };
 
