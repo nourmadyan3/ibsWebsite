@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "./components/ui/button";  
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 } from "./components/ui/card"; */
 import { motion } from "framer-motion";
 import TextWithLink from "./components/TextWithLink";
+import { get } from "http";
 
 // Declare the global 'google' object for TypeScript
 declare global {
@@ -312,8 +313,36 @@ const OurServices = () => {
 
 // OurClients Component - Modified to conditionally show all or loop, and includes its own SINGLE toggle button
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
-  // Reference the global unique clientLogos array defined at the top of the file.
+  const [currentIndex, setCurrentIndex] = useState(0);  // State to track the first visible logo
 
+  // Determine how many logos to show at once based on screen size
+  // This is a simplified example; for robust responsiveness, you might use a ref and measure width
+  const getLogosPerPage = () => {
+    if (typeof window === 'undefined') return 3;  // Default for SSR
+    if (window.innerWidth >= 1024) return 6;  // lg breakpoint
+    if (window.innerWidth >= 768) return 4;  // md breakpoint
+    if (window.innerWidth >= 640) return 3;  // sm breakpoint
+    return 2; // default for small screens
+  };
+
+  const logosPerPage = getLogosPerPage();
+  const totalLogos = clientLogos.length;
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalLogos);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + totalLogos) % totalLogos);
+  };
+
+  // Prepare logos for display, looping them if necessary for smooth transitions
+  // We'll show enough logos to fill the view plus a few more for smooth sliding
+  const displayedLogos = [];
+  for (let i = 0; i < totalLogos + logosPerPage; i++){  // Add extra logos for seamless transition
+    displayedLogos.push(clientLogos[(currentIndex + i) % totalLogos]);
+  }
+  
   return (
       <div className="py-8">
           <h2 className="text-2xl font-semibold mb-8 text-left text-[#ed253c]">OUR CLIENTS</h2>
@@ -322,52 +351,68 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
                   {clientLogos.map((logo, index) => (
                       // Corrected width/height classes to be valid Tailwind or explicit
-                      <div key={`full-logo-${index}`} className="relative w-[160px] h-[120px] ">
+                      <div key={`full-logo-${index}`} className="relative w-[100px] h-[100px] ">
                           <Image
                               src={logo}
                               alt={`Client Logo ${index + 1}`}
-                              fill={true}
+                        width={100}
+                        height={100}
+                              //fill={true}
                               style={{ objectFit: 'contain' }}
                           />
                       </div>
                   ))}
               </div>
           ) : (
-              // Display looping logos
+              // Display logos with arrow navigation
           <div className="relative w-full overflow-hidden py-4">
-            {/* Add min-w-max here to ensure the flex container is wide enough for the animation */}
-                  <div className="flex animate-marquee whitespace-nowrap min-w-max"> 
-                      {/* Render logos multiple times to create a seamless loop.
-                          Crucially, ensure UNIQUE keys for each rendered item.
-                      */}
-                      {clientLogos.map((logo, index) => (
-                          // Corrected width/height classes and increased mx for more spacing
-                          <div key={`loop-logo-a-${index}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px]">
-                              <Image
-                                  src={logo}
-                                  alt={`Client Logo ${index + 1}`}
-                                  fill={true}
-                                  style={{ objectFit: 'contain' }}
-                              />
-                          </div>
-                      ))}
-                      {clientLogos.map((logo, index) => (
-                          // Corrected width/height classes and increased mx for more spacing
-                          <div key={`loop-logo-b-${index + clientLogos.length}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px]">
-                              <Image
-                                  src={logo}
-                                  alt={`Client Logo ${index + 1 + clientLogos.length}`}
-                                  fill={true}
-                                  style={{ objectFit: 'contain' }}
-                              />
-                          </div>
-                      ))}
-                  </div>
+            
+                  <div className="flex items-center justify-center"> 
+                      {/* Previous Button */}
+              <Button
+                variant="ghost"
+                className="p-2 mr-2 text-[#000000] text-4xl"
+                onClick={handlePrev}
+                aria-label="Previous client logo"
+              >
+                &#8249; {/* Left arrow HTML entity */}
+              </Button>
+
+              {/* Logos Container */}
+              <div className="flex flex-grow overflow-hidden">
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentIndex * 164}px)` }}  // Fixed template literal and adjusted width calculation
+                >
+                  {clientLogos.map((logo, index) => (
+                    <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
+                      <Image
+                        src={logo}
+                        alt={`Client Logo ${index + 1}`}
+                        width={100}
+                        height={100}
+                        style={{ objectFit: 'contain' }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
+            
+            {/* Next Button */}
+            <Button
+                variant="ghost"
+                className="p-2 mr-2 text-[#000000] text-4xl"
+                onClick={handleNext}
+                aria-label="Next client logo"
+              >
+                &#8250; {/* Right arrow HTML entity */}
+              </Button>
+            </div>
+            </div>
           )}
 
           {/* Single Toggle Button for "SEE ALL" / "SHOW FEWER" */}
-          <div className="text-center mt-8 mb-1">
+          <div className="text-center mt-13">
               <Button
                   variant={seeAll ? "outline" : "default"} // Change variant based on state
                   className="px-8 py-3 text-lg font-semibold" // Text color will be handled by the Button component's variant logic
