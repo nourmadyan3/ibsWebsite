@@ -1,19 +1,21 @@
 import React from 'react';
-import Link from 'next/link';
+//import Link from 'next/link';
 
 interface TextWithLinkProps {
   text: string;
-  linkText: string;
+  text2: string;
   href: string;
 }
 
-const TextWithLink: React.FC<TextWithLinkProps> = ({ text, linkText, href }) => {
+const TextWithLink: React.FC<TextWithLinkProps> = ({ text, text2, href }) => {
   return (
-    <p>
-      {text}
-      <Link href={href} className="text-blue-500 hover:underline" as="a">
-        {linkText}
-      </Link>
+    <p className='text-gray-700 dark:text-[#EFEFEF]'>
+      <a
+        href={href}
+      className="text-[#ed253c] hover:text-[#ed253c] cursor-default"
+        >
+        {text} <span className='text-[#828282] text-sm hover:text-[#ed253c] cursor-default'>{text2 }</span>    {/* Both texts are now inside the link */}
+      </a>
     </p>
   );
 };
