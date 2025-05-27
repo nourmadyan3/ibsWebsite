@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "./components/ui/button";  
 import { cn } from "@/lib/utils";
@@ -15,13 +15,21 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TextWithLink from "./components/TextWithLink";
 
+// Declare the global 'google' object for TypeScript
+declare global {
+  interface Window {
+    google: any; // You can make this more specific with google.maps types if you install @types/google.maps
+    initMap: () => void; // Declare the global callback function for Google Maps API
+  }
+}
+
 
 // Dummy image imports (replace with your actual image paths)
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
 const ubdteamImage = "/images/updatedTeam.jpg"; // This should be the image of the team
 const aboutUsPaperBoatsImage = "/images/web10.jpg"; // This should be the image of the paper boats
 const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
-const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
+//const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
 
 // Client Logos (add your actual client logo paths here)
 const clientLogos = [
@@ -221,7 +229,8 @@ const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
           alt="About Us Illustration"
           fill={true}
           style={{objectFit: 'contain', objectPosition:'right'}}  //Use 'contain' to fit the whole image
-          className="w-full h-full"
+          className="w-full h-full opacity-30"
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
 
@@ -314,7 +323,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
                   {clientLogos.map((logo, index) => (
                       // Corrected width/height classes to be valid Tailwind or explicit
-                      <div key={`full-logo-${index}`} className="relative w-[160px] h-[120px] grayscale hover:grayscale-0 transition-all duration-300">
+                      <div key={`full-logo-${index}`} className="relative w-[160px] h-[120px] ">
                           <Image
                               src={logo}
                               alt={`Client Logo ${index + 1}`}
@@ -334,7 +343,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
                       */}
                       {clientLogos.map((logo, index) => (
                           // Corrected width/height classes and increased mx for more spacing
-                          <div key={`loop-logo-a-${index}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px] grayscale hover:grayscale-0 transition-all duration-300">
+                          <div key={`loop-logo-a-${index}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px]">
                               <Image
                                   src={logo}
                                   alt={`Client Logo ${index + 1}`}
@@ -345,7 +354,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
                       ))}
                       {clientLogos.map((logo, index) => (
                           // Corrected width/height classes and increased mx for more spacing
-                          <div key={`loop-logo-b-${index + clientLogos.length}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px] grayscale hover:grayscale-0 transition-all duration-300">
+                          <div key={`loop-logo-b-${index + clientLogos.length}`} className="flex-shrink-0 mx-16 relative w-[200px] h-[160px]">
                               <Image
                                   src={logo}
                                   alt={`Client Logo ${index + 1 + clientLogos.length}`}
@@ -359,7 +368,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
           )}
 
           {/* Single Toggle Button for "SEE ALL" / "SHOW FEWER" */}
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 mb-1">
               <Button
                   variant={seeAll ? "outline" : "default"} // Change variant based on state
                   className="px-8 py-3 text-lg font-semibold" // Text color will be handled by the Button component's variant logic
@@ -374,28 +383,78 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
 
 // New ContactUs Component
 const ContactUs: React.FC = () => {
+  const specificLocationCoordinates = { lat: 29.969692312109558, lng: 31.2750723178029 };
+  useEffect(() => {
+    // Function to initialize the map
+    const initMap = () => {
+      // Check if google.maps is available (API loaded)
+      if (window.google && window.google.maps) {
+        const map = new window.google.maps.Map(
+          document.getElementById('map') as HTMLElement,
+          {
+            center: specificLocationCoordinates, // Use the specific coordinates
+            zoom: 16, // Increased zoom level to be more specific
+            mapId: "DEMO_MAP_ID", // Optional: Use a Map ID for custom styling from Cloud Console
+          }
+        );
+        new window.google.maps.Marker({
+          position: specificLocationCoordinates, // Place marker at specific coordinates
+          map: map,
+          title: 'ibs'
+        });
+      } else {
+        console.warn('Google Maps API not loaded yet.');
+      }
+    };
+    // Load Google Maps API script only if it's not already loaded
+    if (!document.getElementById('google-maps-script')) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBo7J0C5GNqt694roRnK8UXPcgtlvlkTQU&callback=initMap`; // REPLACE 'YOUR_GOOGLE_MAPS_API_KEY'
+      script.async = true;
+      script.defer = true;
+      script.id = 'google-maps-script';
+      // Assign initMap to the window object so it's globally accessible as a callback
+      (window as any).initMap = initMap;
+      document.head.appendChild(script);
+    } else {
+      // If script is already present, but map not initialized (e.g., component re-mount)
+      // Call initMap directly if the API is ready
+      if (window.google && window.google.maps) {
+        initMap();
+      }
+    }
+
+    // Cleanup function if component unmounts (optional for single page, good practice)
+    return () => {
+      // Remove the script if necessary, though for single-page apps it might not be critical
+      const script = document.getElementById('google-maps-script');
+      if (script) {
+        script.remove();
+      }
+      delete (window as any).initMap; // Clean up the global callback
+    };
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <div className="py-8 text-center ">
-    
-
-      <h2 className="text-2xl font-semibold mb-8 text-foreground">CONTACT US</h2>
-      <p className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-8">
-      CALL US ON 19786
-      </p>
+      {/* Wrapper div for the heading to apply borders */}
+      {/* Added w-fit and mx-auto to control the line length and center it */}
+      <div className="border-t border-b border-[#000000] py-4 mb-8 mt-0 w-fit mx-auto">
+      <h2 className="text-2xl font-semibold text-foreground m-0 text-[#ed253c]">CONTACT US</h2>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
-        {/* Map Placeholder */}
-        {/* <div className="relative w-full md:w-1/2 h-64 md:h-96 rounded-lg shadow-lg overflow-hidden">
-          <Image
-            src={mapPlaceHolder}
-            alt="Location Map"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div> */}
+        {/* Map Container - Replaced Image with a div for the map */}
+        <div id="map" className="relative w-full md:w-1/2 h-64 md:h-96 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
+          {/* Fallback text if map doesn't load */}
+          Loading Map...
+        </div> 
 
         {/* Working Hours & Address */}
         <div className="md:w-1/2 text-left p-4">
+        <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-8">
+      CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c]">19786</span>
+      </p>
           <h3 className="text-xl font-semibold mb-4 text-foreground">Working Hours</h3>
           <p className="text-[#828282]  mb-2">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
           <p className="text-[#828282]  mb-2">Friday - Saturday: Closed</p>
@@ -421,7 +480,7 @@ const Home: React.FC = () => {
   const [seeAll, setSeeAll] = React.useState(false);
 
   return (
-    <div className="bg-background min-h-screen relative overflow-hidden ">
+    <div className="bg-[#fafafa] min-h-screen relative overflow-hidden ">
       <Navbar buttons={NavbarButtons} />
       <Cover
         imageUrl={coverImage}
@@ -484,7 +543,7 @@ const Home: React.FC = () => {
         <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
 
         {/* Contact Us Section */}
-        <ContactUs />
+      <ContactUs />
 
       
     </div>
