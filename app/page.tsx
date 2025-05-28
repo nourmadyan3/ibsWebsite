@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TextWithLink from "./components/TextWithLink";
 import { get } from "http";
+import { title } from "process";
 
 // Declare the global 'google' object for TypeScript
 declare global {
@@ -431,6 +432,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
 // New ContactUs Component
 const ContactUs: React.FC = () => {
   const specificLocationCoordinates = { lat: 29.969692312109558, lng: 31.2750723178029 };
+  const addressString = "New Maadi،, 10 Street 261, Ezbet Fahmy, El Basatin, Cairo Governorate"
   useEffect(() => {
     // Function to initialize the map
     const initMap = () => {
@@ -444,11 +446,21 @@ const ContactUs: React.FC = () => {
             mapId: "DEMO_MAP_ID", // Optional: Use a Map ID for custom styling from Cloud Console
           }
         );
-        new window.google.maps.Marker({
+
+        const marker = new window.google.maps.Marker({
           position: specificLocationCoordinates, // Place marker at specific coordinates
           map: map,
-          title: 'ibs'
+          title: 'IBS Office',  // Updated marker title for clarity
         });
+
+        // Add click listener to the marker
+        marker.addListener('click', () => {
+          // Open Google Maps in a new tab with directions to the address
+          // Using the "q" parameter for search query or "daddr" for destination address
+          const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressString)}`;
+          window.open(googleMapsUrl, '_blank');
+        });
+        
       } else {
         console.warn('Google Maps API not loaded yet.');
       }
@@ -492,7 +504,7 @@ const ContactUs: React.FC = () => {
 
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
         {/* Map Container - Replaced Image with a div for the map */}
-        <div id="map" className="relative w-full md:w-1/2 h-64 md:h-96 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
+        <div id="map" className="relative mt-5 left-6 w-full md:w-1/2 h-48 md:h-65 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
           {/* Fallback text if map doesn't load */}
           Loading Map...
         </div> 
@@ -500,7 +512,7 @@ const ContactUs: React.FC = () => {
         {/* Working Hours & Address */}
         <div className="md:w-1/2 text-left p-4">
         <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-8">
-      CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c]">19786</span>
+      CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c] ">19786</span>
       </p>
           <h3 className="text-xl font-semibold mb-4 text-foreground">Working Hours</h3>
           <p className="text-[#828282]  mb-2">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
