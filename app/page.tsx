@@ -313,42 +313,20 @@ const OurServices = () => {
 
 // OurClients Component - Modified to create a seamless infinite loop effect for the logos
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Determine how many logos to show at once based on screen size
-  const getLogosPerPage = () => {
-    if (typeof window === 'undefined') return 3;
-    if (window.innerWidth >= 1024) return 6;
-    if (window.innerWidth >= 768) return 4;
-    if (window.innerWidth >= 640) return 3;
-    return 2;
-  };
-
   const totalLogos = clientLogos.length;
 
-  // Create a duplicated array for seamless looping
-  const duplicatedLogos = [...clientLogos, ...clientLogos, ...clientLogos];
-
-  useEffect(() => {
-    if (!seeAll) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => {
-          // When we reach the end of the first set, continue to the second set
-          // This creates the illusion of infinite scroll
-          return prevIndex + 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [seeAll]);
-
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => prevIndex + 1);
+    const container = document.querySelector('.logo-container');
+    if (container) {
+      container.scrollBy({ left: 164, behavior: 'smooth' });
+    }
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => prevIndex - 1);
+    const container = document.querySelector('.logo-container');
+    if (container) {
+      container.scrollBy({ left: -164, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -357,7 +335,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
       {seeAll ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
           {clientLogos.map((logo, index) => (
-            <div key={`full-logo-${index}`} className="relative w-[100px] h-[100px]">
+            <div key={`full-logo-${index}`} className="relative w-[100px] h-[150px]">
               <Image
                 src={logo}
                 alt={`Client Logo ${index + 1}`}
@@ -382,11 +360,14 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
 
             <div className="flex flex-grow overflow-hidden">
               <div
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentIndex * 164}px)` }}
+                className="flex logo-container"
+                style={{ 
+                  width: 'fit-content',
+                  animation: 'scroll 100s linear infinite'
+                }}
               >
-                {duplicatedLogos.map((logo, index) => (
-                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[100px]">
+                {[...clientLogos, ...clientLogos].map((logo, index) => (
+                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[150px]">
                     <Image
                       src={logo}
                       alt={`Client Logo ${index + 1}`}
@@ -420,6 +401,17 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
           {seeAll ? "SHOW FEWER CLIENTS" : "SEE ALL CLIENTS"}
         </Button>
       </div>
+
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </div>
   );
 };
