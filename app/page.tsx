@@ -26,7 +26,7 @@ declare global {
 
 // Dummy image imports (replace with your actual image paths)
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
-const ubdteamImage = "/images/updatedTeam.jpg"; // This should be the image of the team
+const ubdteamImage = "/images/updatedtteam2.png"; // This should be the image of the team
 const aboutUsPaperBoatsImage = "/images/web10.jpg"; // This should be the image of the paper boats
 const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
 //const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
@@ -69,6 +69,7 @@ interface NavbarButton {
 interface CoverProps {
   imageUrl: string;
   mainText: string; // Changed to mainText for clarity
+  main: string
   subText: string; // New prop for the smaller text
 }
 
@@ -158,7 +159,7 @@ const Navbar: React.FC<{ buttons: NavbarButton[] }> = ({ buttons }) => {
 };
 
 // Cover Component - Updated to include subText 
-const Cover: React.FC<CoverProps> = ({ imageUrl, mainText, subText }) => {
+const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
   return (
     <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
       <Image
@@ -169,30 +170,47 @@ const Cover: React.FC<CoverProps> = ({ imageUrl, mainText, subText }) => {
         className="absolute inset-0 w-full h-full"
       />
 
-      <div
+      {/* <div
         className={cn(
           'absolute inset-0 bg-grey/30', // Dark overlay for better text contrast
           'flex items-left justify-center',
         )}
-      />
+      /> */}
 
-      <motion.div initial={{ opacity: 0, y: 50 }}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
-        className="relative z-10 text-center text-white p-4 md:p-8"
+        className="relative z-10 flex items-left w-full"
       >
-        <h1
-          className={cn(
-            'text-3xl md:text-4xl lg:text-5xl font-bold mb-2',
-            'drop-shadow-lg',
-          )}
+        <div 
+          className="bg-[#FFFFFFCC]/80 m-10 text-center"
+          style={{
+            width: '571px',
+            height: '325px',
+            left: '115px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <span className="text-[#ed253c]">{mainText}</span>
-        </h1>
-
-        <p className="text-lg md:text-xl drop-shadow-lg max-w-2xl mx-auto text-[#828282]">
-          {subText}
-        </p>
+          <h1
+            className={cn(
+              'mb-1 drop-shadow-lg',
+              'font-[\'Work Sans\'], font-sans',
+              'text-[46px]',
+              'leading-tight'
+            )}
+          >
+            {mainText}
+            <span className="block text-[#ed253c] font-[\'Work Sans\'] text-[46px] leading-tight">{main}</span>
+          </h1>
+          
+          <p className="text-[14px] font-['Inter'] drop-shadow-lg max-w-2xl mx-auto text-[#fafafa] leading-tight">
+            {subText}
+          </p>
+        </div>
       </motion.div>
     </div>
   );
@@ -234,7 +252,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
         />
       </div>
 
-        <div className="relative z-10 px-4 md:px-6 lg:px-8 max-w-full md:max-w-[80%] lg:max-w-[90%]">  {/* Added text-left for text alignment */}
+        <div className="relative z-10 lg:px-6 max-w-full md:max-w-[80%] lg:max-w-[90%]">  {/* Added text-left for text alignment */}
         <h2 className={cn(
           'text-2xl font-semibold mb-4 text-[#ed253c]'
         )}
@@ -242,7 +260,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
           ABOUT US
         </h2>
 
-        <p className="text-[#828282] dark:text-gray-300 leading-relaxed text-justify">
+        <p className="text-[#828282] dark:text-[#828282] leading-relaxed text-justify">
           {text}
         </p>
       </div>
@@ -276,37 +294,30 @@ const OurServices = () => {
   ];
 
   return (
-    <div className="py-8">
-      <h2 className="text-2xl font-semibold mb-8 text-left text-[#ed253c]">OUR SERVICES</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-1 gap-y-4 gap-x-8">
+    <div className="py-7 mt-15">
+      <h2 className="text-2xl font-semibold mb-8 text-[#ed253c]">OUR SERVICES</h2>
+      <div className="flex flex-col gap-6">
         {services.map((service, index) => (
-          <div key={index}
-            className={cn(
-              "flex items-start gap-2",
-              { "border-b border-[#000000] pb-1 mb-1": index < services.length - 1 }  // Apply border-bottom to all but the last item
-            )}
+          <div
+            key={index}
+            className={`flex flex-col md:flex-row items-center md:items-center gap-4 pb-6 ${index < services.length - 1 ? 'border-b border-[#bdbdbd]' : ''}`}
           >
-            <span className="w-3 h-3 bg-[#ed253c] rounded-full flex-shrink-0 mt-2"></span> {/* Red dot */}
-
-            <div>
-              {/* Made the service title an anchor link */}
+            <span className="w-4 h-4 bg-[#ed253c] rounded-full flex-shrink-0 mt-1 md:mt-0"></span>
+            <div className="flex flex-col md:flex-row md:items-center w-full gap-4">
               <a
-                href={`/services/${service.title.toLowerCase().replace(/\s+/g, '-')}`}   // Example: /services/payroll
-                className="text-lg font-semibold  hover:text-[#ed253c] cursor-default"
+                href={`/services/${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                className="text-lg font-semibold hover:text-[#ed253c] min-w-[140px] md:text-left md:pr-6 cursor-default"
+                style={{ flex: '0 0 180px' }}
               >
                 {service.title}
               </a>
-              <p className="text-[#828282] dark:text-[#828282] text-justify">{service.description}</p>
-              
-
+              <p className="text-[#828282] dark:text-[#828282] text-justify md:text-left flex-1">
+                {service.description}
+              </p>
             </div>
-
           </div>
         ))}
-
       </div>
-
     </div>
   );
 };
@@ -315,7 +326,7 @@ const OurServices = () => {
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
   const totalLogos = clientLogos.length;
 
-  const handleNext = () => {
+ /*  const handleNext = () => {
     const container = document.querySelector('.logo-container');
     if (container) {
       container.scrollBy({ left: 164, behavior: 'smooth' });
@@ -327,21 +338,21 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
     if (container) {
       container.scrollBy({ left: -164, behavior: 'smooth' });
     }
-  };
+  }; */
 
   return (
     <div className="py-8">
-      <h2 className="text-2xl font-semibold mb-8 text-left text-[#ed253c]">OUR CLIENTS</h2>
+      <h2 className="text-2xl font-semibold mb-8 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
       {seeAll ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
           {clientLogos.map((logo, index) => (
-            <div key={`full-logo-${index}`} className="relative w-[100px] h-[150px]">
+            <div key={`full-logo-${index}`} className="relative w-[180px] h-[100px] flex items-center justify-center  rounded">
               <Image
                 src={logo}
                 alt={`Client Logo ${index + 1}`}
-                width={100}
-                height={100}
-                style={{ objectFit: 'contain' }}
+                width={140}
+                height={60}
+                style={{ objectFit: 'contain', padding: '8px' }}
               />
             </div>
           ))}
@@ -349,45 +360,46 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
       ) : (
         <div className="relative w-full overflow-hidden py-4">
           <div className="flex items-center justify-center">
-            <Button
+            {/* <Button
               variant="ghost"
-              className="p-2 mr-2 text-[#000000] text-4xl"
+              className="p-2 ml-2 text-[#000000] text-4xl"
               onClick={handlePrev}
               aria-label="Previous client logo"
             >
               &#8249;
-            </Button>
+            </Button> */}
 
-            <div className="flex flex-grow overflow-hidden">
+            <div className="flex flex-grow overflow-hidden justify-center items-center bg-white">
               <div
                 className="flex logo-container"
-                style={{ 
+                style={{
                   width: 'fit-content',
-                  animation: 'scroll 100s linear infinite'
+                  animation: 'scroll 100s linear infinite',
+                
                 }}
               >
                 {[...clientLogos, ...clientLogos].map((logo, index) => (
-                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[100px] h-[150px]">
+                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[200px] h-[100px] flex items-center justify-center">
                     <Image
                       src={logo}
                       alt={`Client Logo ${index + 1}`}
-                      width={100}
-                      height={100}
-                      style={{ objectFit: 'contain' }}
+                      width={180}
+                      height={80}
+                      style={{ objectFit: 'contain', maxHeight: '80px', maxWidth: '180px' }}
                     />
                   </div>
                 ))}
               </div>
             </div>
 
-            <Button
+            {/* <Button
               variant="ghost"
               className="p-2 mr-2 text-[#000000] text-4xl"
               onClick={handleNext}
               aria-label="Next client logo"
             >
               &#8250;
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}
@@ -519,13 +531,14 @@ const Home: React.FC = () => {
       <Navbar buttons={NavbarButtons} />
       <Cover
         imageUrl={coverImage}
-        mainText="WE ASSIST, YOU SUCCEED"
+        mainText="WE ASSIST,"
+        main="YOU SUCCEED"
         subText="With over 35 years of experience, we're your local experts in delivering HR outsourcing solutions that drive success"
       />
 
       {/* New section with background color after Cover Image */}
-      <div className="w-full bg-[#EFEFEF] py-2 my-3">    {/* Added background color and padding */}
-        <div className="container mx-auto px-3 md:px-6 lg:px-8 text-left ">
+      <div className="w-full bg-[#EFEFEF]  py-2 my-3">    {/* Added background color and padding */}
+        <div className="container mx-auto lg:px-6 text-left ">
           {/* Replaced placeholder text with TextWithLink */}
           <TextWithLink
             text="New This Week!: "
@@ -536,7 +549,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Team Photo Section - Directly embedded here */}
-      <div className="my-8 relative w-full max-w-4xl mx-auto h-[170px] md:h-[170px]">
+      <div className="my-8 relative w-full max-w-4xl mx-auto h-[270px] md:h-[270px]">
           <Image
             src={ubdteamImage}
             alt="Our Team"
@@ -551,33 +564,17 @@ const Home: React.FC = () => {
           imageUrl={aboutUsPaperBoatsImage}
         />
 
-
-      {/* The new background rectangle for cards - adjusted top and height for new layout */}
-      <div
-        className="absolute bg-[#EFEFEF] z-0 hidden md:block" // Hidden on small screens, adjust as needed
-        style={{
-          width: '100%', // Make it responsive
-          maxWidth: '1519px',  // Max width as per design
-          height: '500px', // Adjusted height to cover services
-          left: '-34px', 
-          top: '1135px',  // Adjusted top based on visual flow, might need fine-tuning
-          margin: '50px',
-        }}
-      ></div>
-
-      <div
-        className={cn(
-        'container mx-auto py-3 -my-10 px-4 md:px-6 lg:px-8 relative z-10'
-        )}
-      >
-
-        {/* Our Services Section - now a list */}
-        <OurServices />
+      {/* Our Services Section - now with its own container */}
+      <div className="w-fit bg-[#EFEFEF] relative m-10">
+        <div className="container w-fit m-10">
+          <OurServices />
         </div>
-        {/* Our Clients Section */}
-        <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
+      </div>
 
-        {/* Contact Us Section */}
+      {/* Our Clients Section */}
+      <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
+
+      {/* Contact Us Section */}
       <ContactUs />
 
       
