@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import React, { useEffect, useState } from "react";
@@ -12,7 +15,7 @@ import { cn } from "@/lib/utils";
   CardFooter,
   CardDescription,
 } from "./components/ui/card"; */
-import { motion } from "framer-motion";
+//import { motion } from "framer-motion";
 import TextWithLink from "./components/TextWithLink";
 import { get } from "http";
 import { title } from "process";
@@ -27,7 +30,7 @@ declare global {
 
 // Dummy image imports (replace with your actual image paths)
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
-const ubdteamImage = "/images/updatedtteam2.png"; // This should be the image of the team
+const ubdteamImage = "/images/recovered.png"; // This should be the image of the team
 const aboutUsPaperBoatsImage = "/images/web10.jpg"; // This should be the image of the paper boats
 const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
 //const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
@@ -178,10 +181,7 @@ const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
         )}
       /> */}
 
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
+      <div
         className="relative z-10 flex items-left w-full"
       >
         <div 
@@ -212,13 +212,13 @@ const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
             {subText}
           </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
 
 // ImageSection Component - Updated to allow flexible height
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const ImageSection: React.FC<ImageSectionProps> = ({ imageUrl, altText, title, description, heightClass = "h-96" }) => {
   return (
     <div className={cn("my-8 relative w-full", heightClass)}>
@@ -433,66 +433,67 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
 const ContactUs: React.FC = () => {
   const specificLocationCoordinates = { lat: 29.969692312109558, lng: 31.2750723178029 };
   const addressString = "New Maadi،, 10 Street 261, Ezbet Fahmy, El Basatin, Cairo Governorate"
+  
   useEffect(() => {
+    let isMounted = true;
+
     // Function to initialize the map
     const initMap = () => {
+      if (!isMounted) return;
+      
       // Check if google.maps is available (API loaded)
       if (window.google && window.google.maps) {
         const map = new window.google.maps.Map(
           document.getElementById('map') as HTMLElement,
           {
-            center: specificLocationCoordinates, // Use the specific coordinates
-            zoom: 16, // Increased zoom level to be more specific
-            mapId: "DEMO_MAP_ID", // Optional: Use a Map ID for custom styling from Cloud Console
+            center: specificLocationCoordinates,
+            zoom: 16,
+            mapId: "DEMO_MAP_ID",
           }
         );
 
         const marker = new window.google.maps.Marker({
-          position: specificLocationCoordinates, // Place marker at specific coordinates
+          position: specificLocationCoordinates,
           map: map,
-          title: 'IBS Office',  // Updated marker title for clarity
+          title: 'IBS Office',
         });
 
-        // Add click listener to the marker
         marker.addListener('click', () => {
-          // Open Google Maps in a new tab with directions to the address
-          // Using the "q" parameter for search query or "daddr" for destination address
           const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressString)}`;
           window.open(googleMapsUrl, '_blank');
         });
-        
-      } else {
-        console.warn('Google Maps API not loaded yet.');
       }
     };
-    // Load Google Maps API script only if it's not already loaded
-    if (!document.getElementById('google-maps-script')) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBo7J0C5GNqt694roRnK8UXPcgtlvlkTQU&callback=initMap`; // REPLACE 'YOUR_GOOGLE_MAPS_API_KEY'
-      script.async = true;
-      script.defer = true;
-      script.id = 'google-maps-script';
-      // Assign initMap to the window object so it's globally accessible as a callback
-      (window as any).initMap = initMap;
-      document.head.appendChild(script);
-    } else {
-      // If script is already present, but map not initialized (e.g., component re-mount)
-      // Call initMap directly if the API is ready
-      if (window.google && window.google.maps) {
+
+    // Only load the script if it hasn't been loaded yet
+    if (!window.google?.maps) {
+      const existingScript = document.getElementById('google-maps-script');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBo7J0C5GNqt694roRnK8UXPcgtlvlkTQU&callback=initMap`;
+        script.async = true;
+        script.defer = true;
+        script.id = 'google-maps-script';
+        window.initMap = initMap;
+        document.head.appendChild(script);
+      } else if (window.google?.maps) {
+        // If script exists and maps is loaded, initialize map
         initMap();
       }
+    } else {
+      // If maps is already loaded, initialize map
+      initMap();
     }
 
-    // Cleanup function if component unmounts (optional for single page, good practice)
+    // Cleanup function
     return () => {
-      // Remove the script if necessary, though for single-page apps it might not be critical
-      const script = document.getElementById('google-maps-script');
-      if (script) {
-        script.remove();
+      isMounted = false;
+      if ('initMap' in window) {
+        // @ts-expect-error: Deleting property from window
+        delete window.initMap;
       }
-      delete (window as any).initMap; // Clean up the global callback
     };
-  }, []); // Empty dependency array means this runs once on mount
+  }, [specificLocationCoordinates, addressString]);
 
   return (
     <div className="py-8 text-center ">
@@ -502,25 +503,26 @@ const ContactUs: React.FC = () => {
       <h2 className="text-2xl font-semibold text-foreground m-0 text-[#ed253c]">CONTACT US</h2>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
+      <div className="flex flex-col md:flex-row gap-7 items-center md:items-start justify-center">
         {/* Map Container - Replaced Image with a div for the map */}
-        <div id="map" className="relative mt-5 left-6 w-full md:w-1/2 h-48 md:h-65 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
+        <div id="map" className="relative mt-5 left-6 w-full md:w-1/3 h-42 md:h-57 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
           {/* Fallback text if map doesn't load */}
           Loading Map...
         </div> 
 
         {/* Working Hours & Address */}
-        <div className="md:w-1/2 text-left p-4">
-        <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-8">
+        <div className="md:w-1/3 text-left p-4">
+        <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-7">
       CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c] ">19786</span>
       </p>
-          <h3 className="text-xl font-semibold mb-4 text-foreground">Working Hours</h3>
-          <p className="text-[#828282]  mb-2">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
-          <p className="text-[#828282]  mb-2">Friday - Saturday: Closed</p>
-          <h3 className="text-xl font-semibold mt-6 mb-2 text-foreground">Address</h3>
-          <p className="text-[#828282] ">2261 New Maadi, Cairo, Egypt</p>
-          <p className="text-[#828282] ">Al Nahda Al Gadida, Maadi</p>
-
+          <h3 className="text-xl font-semibold mb-2 text-foreground">Working Hours</h3>
+          <p className="text-[#828282] text-sm">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
+          <p className="text-[#828282] text-sm">Friday - Saturday: Closed</p>
+          <h3 className="text-xl font-semibold mt-7 mb-2 text-foreground">Address</h3>
+          {/* <p className="text-[#828282] ">2261 New Maadi, Cairo, Egypt</p>
+          <p className="text-[#828282] ">Al Nahda Al Gadida, Maadi</p> */}
+          <p className="text-[#828282] text-sm">New Maadi, 10 Street 261, Ezbet Fahmy</p>
+          <p className="text-[#828282] text-sm">El Basatin, Cairo Governorate</p>
         </div>
       </div>
     </div>
