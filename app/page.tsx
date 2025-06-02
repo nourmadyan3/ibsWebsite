@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "./components/ui/button";  
 import { cn } from "@/lib/utils";
+import Head from "next/head";
 /* import {
   Card,
   CardContent,
@@ -20,6 +21,7 @@ import TextWithLink from "./components/TextWithLink";
 import { get } from "http";
 import { title } from "process";
 
+
 // Declare the global 'google' object for TypeScript
 declare global {
   interface Window {
@@ -32,7 +34,7 @@ declare global {
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
 const ubdteamImage = "/images/recovered.png"; // This should be the image of the team
 const aboutUsPaperBoatsImage = "/images/web10.jpg"; // This should be the image of the paper boats
-const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
+//const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
 //const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
 
 // Client Logos (add your actual client logo paths here)
@@ -63,11 +65,7 @@ const clientLogos = [
   '/images/logo24.jpg',
 ]
 
-// Interface for Navbar button data
-interface NavbarButton {
-  label: string;
-  href: string;
-}
+
 
 // Interface for Cover component props
 interface CoverProps {
@@ -92,80 +90,10 @@ interface AboutUsProps {
   imageUrl: string;  // Added image URL back for the paper boats
 }
 
-// --- Placeholder for the missing Button Component ---
-/* const Button: React.FC<any> = ({ children, variant, asChild, ...props }) => { 
-  
-    if (asChild) { 
-      const child = React.Children.only(children) as React.ReactElement;
-      return React.cloneElement(child, {...props, className: cn(child.props.className, getVariantClasses(variant))} );
-    }
-  return (
-    <button {...props}
-      className={cn(getVariantClasses(variant), props.className)}>
-        {children}
-      </button>
-  );
-}; */
-
-/* const getVariantClasses = (variant: string) => { 
-  switch (variant) { 
-    case 'ghost':
-      return 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700';
-    default:
-      return 'bg-blue-500 text-white hover:bg-blue-600'; // Basic button style
-  }
-}; */
-
-
-
-
-// Navbar Component
-const Navbar: React.FC<{ buttons: NavbarButton[] }> = ({ buttons }) => {
-  return (
-    <nav
-      className={cn(
-        'sticky top-0 z-50',
-        'bg-background border-b border-border',
-        'py-4 px-6 md:px-8 lg:px-12',
-        'flex items-center justify-between',
-        'shadow-sm',
-      )}
-    >
-
-      <div className="flex items-center gap-2">
-        {/* Use the Image component for the logo */}
-        <Image
-          src={ibsLogo}
-          alt="IBS Logo"
-          width={200} 
-          height={200}
-          className="rounded-full"   // Make it a circle if appropriate
-        />
-
-        {/* <span className="font-bold text-xl text-foreground">IBS</span> */}
-      </div>
-
-      <div className="space-x-4 md:space-x-6 lg:space-x-8 flex items-center">
-        {buttons.map((button) => (
-          <Button
-            key={button.label}
-            variant="outline"
-            asChild
-          >
-            <a href={button.href} className="hover:text-primary transition-colors cursor-default">
-              {button.label}
-            </a>
-          </Button>
-        ))}
-      </div>
-    </nav>
-  );
-};
-
 // Cover Component - Updated to include subText 
 const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center pt-10">
       <Image
         src={imageUrl}
         alt="Cover Image"
@@ -182,10 +110,10 @@ const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
       /> */}
 
       <div
-        className="relative z-10 flex items-left w-full"
+        className="relative z-10 flex items-left w-full mt-19"
       >
         <div 
-          className="bg-[#FFFFFFCC]/80 m-10 text-center"
+          className="bg-[#FFFFFFCC]/80 m-5  text-center pt-10"
           style={{
             width: '571px',
             height: '325px',
@@ -218,7 +146,7 @@ const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
 };
 
 // ImageSection Component - Updated to allow flexible height
- 
+
 const ImageSection: React.FC<ImageSectionProps> = ({ imageUrl, altText, title, description, heightClass = "h-96" }) => {
   return (
     <div className={cn("my-8 relative w-full", heightClass)}>
@@ -327,20 +255,6 @@ const OurServices = () => {
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
   const totalLogos = clientLogos.length;
 
- /*  const handleNext = () => {
-    const container = document.querySelector('.logo-container');
-    if (container) {
-      container.scrollBy({ left: 164, behavior: 'smooth' });
-    }
-  };
-
-  const handlePrev = () => {
-    const container = document.querySelector('.logo-container');
-    if (container) {
-      container.scrollBy({ left: -164, behavior: 'smooth' });
-    }
-  }; */
-
   return (
     <div className="py-8">
       <h2 className="text-2xl font-semibold mb-8 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
@@ -361,14 +275,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
       ) : (
         <div className="relative w-full overflow-hidden py-4">
           <div className="flex items-center justify-center">
-            {/* <Button
-              variant="ghost"
-              className="p-2 ml-2 text-[#000000] text-4xl"
-              onClick={handlePrev}
-              aria-label="Previous client logo"
-            >
-              &#8249;
-            </Button> */}
+          
 
             <div className="flex flex-grow overflow-hidden justify-center items-center bg-white">
               <div
@@ -393,14 +300,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
               </div>
             </div>
 
-            {/* <Button
-              variant="ghost"
-              className="p-2 mr-2 text-[#000000] text-4xl"
-              onClick={handleNext}
-              aria-label="Next client logo"
-            >
-              &#8250;
-            </Button> */}
+            
           </div>
         </div>
       )}
@@ -531,18 +431,13 @@ const ContactUs: React.FC = () => {
 
 // Main Home Component
 const Home: React.FC = () => {
-  const NavbarButtons: NavbarButton[] = [
-    { label: 'Home', href: '/' },
-    { label: 'Our Services', href: '/services' },
-    { label: 'About Us', href: '/about-us' },
-    { label: 'Contact', href: '/contact' },
-  ];
-
+  
   const [seeAll, setSeeAll] = React.useState(false);
 
   return (
-    <div className="bg-[#fafafa] min-h-screen relative overflow-hidden ">
-      <Navbar buttons={NavbarButtons} />
+    <div className="bg-[#fafafa] min-h-screen relative overflow-hidden pt-18">
+      
+      
       <Cover
         imageUrl={coverImage}
         mainText="WE ASSIST,"
