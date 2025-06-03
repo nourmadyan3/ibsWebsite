@@ -33,7 +33,7 @@ declare global {
 // Dummy image imports (replace with your actual image paths)
 const coverImage = "/images/ibs website2.jpg"; // This should be the image with the building and "WE ASSIST, YOU SUCCEED"
 const ubdteamImage = "/images/recovered.png"; // This should be the image of the team
-const aboutUsPaperBoatsImage = "/images/web10.jpg"; // This should be the image of the paper boats
+const aboutUsPaperBoatsImage = "/images/boat.png"; // This should be the image of the paper boats
 //const ibsLogo = "/images/logo.png"; // This should be the image of the IBS logo
 //const mapPlaceHolder = "/images/map.png"; // This should be the image of the map
 
@@ -169,7 +169,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
   return (
     <div className="py-10 relative w-full  overflow-hidden "> {/* md:flex-row-reverse to put image on right */}
 
-      <div className="absolute top-25 right-1 w-1/3 h-full z-0"> {/* Added min-h for image container */}
+      <div className="absolute top-12 right-1 w-full h-full z-0 mr-1"> {/* Added min-h for image container */}
         
         <Image
           src={imageUrl}
@@ -181,7 +181,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
         />
       </div>
 
-        <div className="relative z-10 lg:px-6 max-w-full md:max-w-[80%] lg:max-w-[90%]">  {/* Added text-left for text alignment */}
+        <div className="relative z-0 lg:px-6 max-w-full md:max-w-[80%] lg:max-w-[90%]">  {/* Added text-left for text alignment */}
         <h2 className={cn(
           'text-2xl font-semibold mb-4 text-[#ed253c]'
         )}

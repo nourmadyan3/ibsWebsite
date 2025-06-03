@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 interface AboutUsSectionProps {
     id: string   // Added id prop for anchor linking
     title: string;
-    text: string;
+    text: React.ReactNode; // Changed to accept ReactNode
+    
     imageUrl?: string; // Optional image for this section
     imageAlt?: string;
     reverseLayout?: boolean; // To alternate image/text layout
@@ -22,30 +23,30 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({
     text,
     imageUrl,
     imageAlt,
-    reverseLayout,
+    //reverseLayout,
     callToActionText,
     callToActionHref,
 }) => {
     return (
         <div id={id} className={cn(   // Apply id here
-            "py-8 flex flex-col items-center gap-8",
-            reverseLayout ? "md:flex-row-reverse" : "md:flex-row",
+            "py-8 flex flex-col items-left gap-8",
+            //reverseLayout ? "md:flex-row-reverse" : "md:flex-row",
             // Background color logic can be more centralized if needed
             // For now, assume default background, or apply via parent page
         )}>
-            <div className="md:w-1/2 text-left px-4 md:px-0">
+            <div className="md:w-1/2 text-left px-4 md:px-0 mt-7">
                 <h2
                     className={cn(
-                        'text-2xl font-semibold mb-4',
+                        'text-3xl font-bold mb-4',
                         title === "WHO IS IBS?" ? "text-[#ed253c]" : "text-foreground", // Main title color
                         'text-foreground',
                     )}
                 >
                     {title}
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="text-[#000000BF] dark:text-gray-300 leading-relaxed text-justify">
                     {text}
-                </p>
+                </div>
                 {callToActionText && callToActionHref && (
                     <div className='mt-6'>
                         <a href={callToActionHref} className='inline-block bg-[#ed253c] text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors'>

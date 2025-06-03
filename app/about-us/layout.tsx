@@ -39,7 +39,7 @@ const AboutUsLayOut: React.FC<AboutUsLayoutProps> = ({ children }) => {
                                             "block py-2 px-3 rounded-md", // Added padding for better click area
                                             "text-gray-700 dark:text-gray-300 hover:text-[#ed253c] transition-colors font-medium cursor-default",
                                             // Highlight active link
-                                            pathname === section.href ? "bg-red-100 text-[#ed253c] font-bold" : ""
+                                            pathname === section.href ? " text-[#ed253c] font-bold" : ""
                                         )}
                                     >
                                         {section.title}
