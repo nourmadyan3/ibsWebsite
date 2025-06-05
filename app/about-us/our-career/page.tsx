@@ -13,7 +13,7 @@ const OurCareerPage: React.FC = () => {
             text="At IBS, we offer dynamic career opportunities for individuals passionate about HR and business solutions. Join a growing team where innovation is encouraged, and professional development is a priority. Explore our current openings and become part of our success story."
             imageUrl={careerImage}
             imageAlt="Career Opportunities"
-            reverseLayout={true}
+            reverseLayout={false}
         />
     );
 };

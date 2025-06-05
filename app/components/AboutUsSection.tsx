@@ -23,14 +23,14 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({
     text,
     imageUrl,
     imageAlt,
-    //reverseLayout,
+    reverseLayout,
     callToActionText,
     callToActionHref,
 }) => {
     return (
         <div id={id} className={cn(   // Apply id here
             "py-8 flex flex-col items-left gap-8",
-            //reverseLayout ? "md:flex-row-reverse" : "md:flex-row",
+            reverseLayout ? "md:flex-row-reverse" : "md:flex-row",
             // Background color logic can be more centralized if needed
             // For now, assume default background, or apply via parent page
         )}>
@@ -56,13 +56,13 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({
                 )}
             </div>
             {imageUrl && (
-                <div className="md:w-1/2 relative h-64 md:h-96 min-h-[200px]">
+                <div className="md:w-4/5 relative h-full md:h-96 min-h-[500px] ">
                     <Image
                         src={imageUrl}
                         alt={imageAlt || title}
                         fill={true}
                         style={{ objectFit: 'contain', objectPosition: 'center' }}
-                        className="w-full h-full opacity-90"
+                        className="w-full h-full"
                         sizes="(max-width: 768px) 100vw, 50vw"
                     />
                 </div>

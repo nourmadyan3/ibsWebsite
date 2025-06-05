@@ -29,14 +29,14 @@ const AboutUsLayOut: React.FC<AboutUsLayoutProps> = ({ children }) => {
                 {/* Side Navigation Bar */}
                 <aside className='w-full md:w-1/4 lg:w-1/5 py-8 md:pr-8 sticky top-16 flex flex-col min-h-full bg-[#EFEFEF]'>  {/* Adjusted top for fixed Navbar */}
                     <nav>
-                        <h3 className='text-xl font-semibold py-8 md:pr-8 ml-3 text-[#ed253c]'>About US</h3>
+                        <h3 className='text-xl font-semibold py-8 md:pr-8 ml-5 text-[#ed253c]'>About US</h3>
                         <ul>
                             {sections.map((section) => (
-                                <li key={section.id} className='mb-2'>
+                                <li key={section.id} className='mb-3 ml-3'>
                                     <Link
                                         href={section.href}
                                         className={cn(
-                                            "block py-2 px-3 rounded-md", // Added padding for better click area
+                                            "block py-3 px-3 rounded-md", // Added padding for better click area
                                             "text-gray-700 dark:text-gray-300 hover:text-[#ed253c] transition-colors font-medium cursor-default",
                                             // Highlight active link
                                             pathname === section.href ? " text-[#ed253c] font-bold" : ""

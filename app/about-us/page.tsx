@@ -33,7 +33,7 @@ const WhoIsIbsPage: React.FC = () => {
                     </p>
                     <br/>
                     <p>
-                        <span className="text-[#000000BF] font-bold">IBS&apos; Values</span><br />
+                        <span className="text-[#000000BF] font-bold">IBS&apos; Values:</span><br />
                         We are committed to staying ahead by continuously evaluating and adapting to evolving client needs, workforce trends, and technological advancements <strong>(Modernization)</strong>. Our work ethic is built on <strong>Transparency</strong>, ensuring open
                     </p>
                     <br />
