@@ -34,7 +34,8 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({
             // Background color logic can be more centralized if needed
             // For now, assume default background, or apply via parent page
         )}>
-            <div className="md:w-1/2 text-left px-4 md:px-0 mt-7">
+            {/* Text container - Adjusted width */}
+            <div className="md:w-1/3 text-left px-4 md:px-0 ">
                 <h2
                     className={cn(
                         'text-3xl font-bold mb-4',
@@ -55,15 +56,16 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({
                     </div>
                 )}
             </div>
+            {/* Image container - Adjusted width */}
             {imageUrl && (
-                <div className="md:w-4/5 relative h-full md:h-96 min-h-[500px] ">
+                <div className="md:w-2/3 relative h-64 md:h-96 min-h-[200px] ">
                     <Image
                         src={imageUrl}
                         alt={imageAlt || title}
                         fill={true}
                         style={{ objectFit: 'contain', objectPosition: 'center' }}
                         className="w-full h-full"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, 66vw" // Adjusted sizes to reflect md:w-2/3 (approx 66%)
                     />
                 </div>
             )}

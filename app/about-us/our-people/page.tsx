@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import AboutUsSection from '@/app/components/AboutUsSection';
+//import AboutUsSection from '@/app/components/AboutUsSection';
 import Image from 'next/image';
-//import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 //import { group } from 'console';
 
 // Dummy image imports
@@ -100,24 +100,31 @@ const groupTeamMembers: TeamGroup[] = [
 const OurPeoplePage: React.FC = () => {
     return (
         <>
-            {/* Introductory section for Our People */}
-            <AboutUsSection
-            id='our-people-intro' // This ID is now more for internal reference than anchor linking 
-            title='OUR PEOPLE'
-            text={
-                <>
-                    <p>
-                        Meet the dedicated professionals powering IBS—our team&apos;s expertise and passion bring our core values to life every day.
-                    </p>
-                    
-                </>
-            }
-            imageUrl={ourPeopleImage}
-            imageAlt='Our Team'
-            //reverseLayout={true}
-            
-            />
-            <h2 className="font-bold text-4xl  text-left  text-[#ed253c] "> Our Team</h2>
+            {/* Introductory section for Our People */}{/* Introductory section for Our People - Manual construction */}
+            <div id="our-people-intro" className="py-8">
+                <h2 className={cn(
+                    'text-2xl font-semibold mb-4 text-[#ed253c]',
+                    'text-foreground',
+                )}>
+                    OUR PEOPLE
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed ">
+                    Our team is our greatest asset. Composed of dedicated professionals with diverse expertise, we are committed to delivering exceptional service and fostering a collaborative environment. We believe in continuous learning and growth, empowering our employees to achieve their full potential.
+                </p>
+
+                {/* Team Image - Centered and below the text */}
+                <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden ">
+                    <Image
+                        src={ourPeopleImage}
+                        alt="Our Team"
+                        fill={true}
+                        style={{ objectFit: 'cover' }}
+                        className="w-full h-full"
+                        sizes="100vw" // Take full width up to parent max-width
+                    />
+                </div>
+            </div>
+            <h2 className="font-bold text-4xl  text-left  text-[#ed253c]"> Our Team</h2>
             {/* Optional: Section for initial individual team members (if you want to keep this) */}
             
 
