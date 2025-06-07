@@ -1,15 +1,14 @@
-// app/about-us/our-clients/page.tsx
 'use client';
 import React from 'react';
-import AboutUsSection from '@/app/components/AboutUsSection';
+import CenteredImageSection from '@/app/components/CenteredImageSection';
 
 const OurClientsPage: React.FC = () => {
     return (
-        <AboutUsSection
+        <CenteredImageSection
             id="our-clients"
             title="OUR CLIENTS"
-            text="We proudly partner with a diverse portfolio of leading local and international companies. Our long-standing relationships are a testament to our commitment to delivering exceptional value and fostering mutual success. For a comprehensive list of our clients, please visit our Clients page."
-            callToActionText="View All Clients"
+            text="Meet the dedicated professionals powering IBS—our team&apos;s expertise and passion bring our core values to life every day.Full and Updated Client List."
+            callToActionText="VIEW ALL CLIENTS"
             callToActionHref="/clients"
         />
     );

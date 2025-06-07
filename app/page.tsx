@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "./components/ui/button";  
 import { cn } from "@/lib/utils";
 import Head from "next/head";
@@ -167,9 +168,8 @@ const ImageSection: React.FC<ImageSectionProps> = ({ imageUrl, altText, title, d
 // AboutUs Component - Updated to include image and match new design
 const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
   return (
-    <div className="py-10 relative w-full  overflow-hidden "> {/* md:flex-row-reverse to put image on right */}
-
-      <div className="absolute top-12 right-1 w-full h-full z-0 mr-1"> {/* Added min-h for image container */}
+    <div className="py-8 bg-white relative w-full  overflow-hidden "> {/* Added relative, overflow-hidden */}
+      <div className=" top-12 right-1 w-full h-full z-0 "> {/* Added min-h for image container */}
         
         <Image
           src={imageUrl}
@@ -258,32 +258,16 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
   return (
     <div className="py-8">
       <h2 className="text-2xl font-semibold mb-8 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
-      {seeAll ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center">
-          {clientLogos.map((logo, index) => (
-            <div key={`full-logo-${index}`} className="relative w-[180px] h-[100px] flex items-center justify-center  rounded">
-              <Image
-                src={logo}
-                alt={`Client Logo ${index + 1}`}
-                width={140}
-                height={60}
-                style={{ objectFit: 'contain', padding: '8px' }}
-              />
-            </div>
-          ))}
-        </div>
-      ) : (
+
         <div className="relative w-full overflow-hidden py-4">
           <div className="flex items-center justify-center">
           
-
             <div className="flex flex-grow overflow-hidden justify-center items-center bg-white">
               <div
                 className="flex logo-container"
                 style={{
                   width: 'fit-content',
                   animation: 'scroll 100s linear infinite',
-                
                 }}
               >
                 {[...clientLogos, ...clientLogos].map((logo, index) => (
@@ -300,19 +284,7 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
               </div>
             </div>
 
-            
           </div>
-        </div>
-      )}
-
-      <div className="text-center mt-13">
-        <Button
-          variant={seeAll ? "outline" : "default"}
-          className="px-8 py-3 text-lg font-semibold"
-          onClick={() => setShowAll(!seeAll)}
-        >
-          {seeAll ? "SHOW FEWER CLIENTS" : "SEE ALL CLIENTS"}
-        </Button>
       </div>
 
       <style jsx>{`
@@ -324,7 +296,8 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
             transform: translateX(-50%);
           }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 };
@@ -480,12 +453,18 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Our Clients Section */}
+      {/* Replaced OurClients component with a simple link/button to the dedicated Clients page */}
       <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
-
+      <div className="py-8 text-center">
+      <Link href="/clients" passHref>
+                        <Button variant="default" className="px-8 py-3 text-lg font-semibold">
+                            VIEW ALL CLIENTS
+                        </Button>
+                    </Link>
+      </div>
+      
       {/* Contact Us Section */}
       <ContactUs />
-
       
     </div>
   );

@@ -54,22 +54,22 @@ export { Button };  */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Button: React.FC<any> = ({ children, variant, asChild, ...props }) => { 
-  
+
     if (asChild) {
-      const child = React.Children.only(children) as React.ReactElement<{ className?: string }>;
-      return React.cloneElement(child, {
+    const child = React.Children.only(children) as React.ReactElement<{ className?: string }>;
+    return React.cloneElement(child, {
         ...props,
         className: cn(child.props.className, getVariantClasses(variant), props.className),
-      });
+    });
     }
     return (
-      <button
+    <button
         {...props}
         className={cn(getVariantClasses(variant), props.className)}
-      >
+    >
         {children}
-      </button>
-  );
+    </button>
+);
 };
 
 const getVariantClasses = (variant: string) => { 
@@ -77,7 +77,7 @@ const getVariantClasses = (variant: string) => {
         case 'default':
             //return 'bg-[#ed253c] text[#828282] hover:bg-[#ed253c]';
         case 'outline':
-            return ' border-[#ed253c] text-[#ed253c] hover:bg-[#ed253c] hover:text-white';
+            return 'border-[#ed253c] text-[#ed253c] hover:bg-[#ed253c] hover:text-white';
         case 'ghost':
             //return 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700';
         default:
