@@ -19,7 +19,7 @@ const AboutUsLayOut: React.FC<AboutUsLayoutProps> = ({ children }) => {
         { id: 'our-people', title: 'Our People', href:'/about-us/our-people' },
         { id: 'our-clients', title: 'Our Clients', href:'/about-us/our-clients'  },
         { id: 'awards-certificates', title: 'Awards and Certificates', href:'/about-us/awards-certificates' },
-        { id: 'our-career', title: 'Our Career', href:'/about-us/our-career' },
+        
     ];
 
     return (

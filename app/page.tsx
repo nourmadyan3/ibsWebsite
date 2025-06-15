@@ -456,7 +456,7 @@ const Home: React.FC = () => {
       {/* Replaced OurClients component with a simple link/button to the dedicated Clients page */}
       <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
       <div className="py-8 text-center">
-      <Link href="/clients" passHref>
+      <Link href="/about-us/our-clients" passHref>
                         <Button variant="default" className="px-8 py-3 text-lg font-semibold">
                             VIEW ALL CLIENTS
                         </Button>
