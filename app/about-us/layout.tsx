@@ -27,12 +27,12 @@ const AboutUsLayOut: React.FC<AboutUsLayoutProps> = ({ children }) => {
             {/* The pt-16 is applied to this container to push content below the main Navbar */}
             <div className="pt-16 flex flex-1 flex-col md:flex-row container mx-auto"> {/* Added pt-16 here */}
                 {/* Side Navigation Bar */}
-                <aside className='w-full md:w-1/4 lg:w-1/5 py-8 md:pr-8 sticky top-16 flex flex-col min-h-full bg-[#EFEFEF]'>  {/* Adjusted top for fixed Navbar */}
+                <aside className='w-full md:w-1/6 lg:w-1/7 py-8 md:pr-8 sticky top-16 flex flex-col min-h-full bg-[#EFEFEF]'>  {/* Adjusted top for fixed Navbar */}
                     <nav>
                         <h3 className='text-xl font-semibold py-8 md:pr-8 ml-5 text-[#ed253c]'>About US</h3>
                         <ul>
                             {sections.map((section) => (
-                                <li key={section.id} className='mb-3 ml-3'>
+                                <li key={section.id} className='ml-3'>
                                     <Link
                                         href={section.href}
                                         className={cn(

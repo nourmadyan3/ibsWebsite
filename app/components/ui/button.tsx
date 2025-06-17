@@ -75,7 +75,7 @@ const Button: React.FC<any> = ({ children, variant, asChild, ...props }) => {
 const getVariantClasses = (variant: string) => { 
     switch (variant) {
         case 'default':
-            //return 'bg-[#ed253c] text[#828282] hover:bg-[#ed253c]';
+            //return 'bg-[#ed253c] text-[#828282] hover:bg-[#ed253c]';
         case 'outline':
             return 'border-[#ed253c] text-[#ed253c] hover:bg-[#ed253c] hover:text-white';
         case 'ghost':

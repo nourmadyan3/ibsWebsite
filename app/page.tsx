@@ -91,6 +91,11 @@ interface AboutUsProps {
   imageUrl: string;  // Added image URL back for the paper boats
 }
 
+// New EmailContactForm Component
+interface EmailContactFormProps {
+  targetEmail: string;
+}
+
 // Cover Component - Updated to include subText 
 const Cover: React.FC<CoverProps> = ({ imageUrl, main, mainText, subText }) => {
   return (
@@ -302,6 +307,173 @@ const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => vo
   );
 };
 
+// New EmailContactForm Component
+const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    telephone: '',
+    subject: '',
+    message: '',
+  });
+  
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('sending');
+    setErrorMessage('');
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setStatus('error');
+      setErrorMessage('Please fill in all required fields (Name, Email, Subject, Message).');
+      return;
+    }
+
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setStatus('error');
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    try {
+      // Replace with your actual API endpoint or third-party service call
+      // This is a placeholder for your backend logic to send the email
+      const response = await fetch('/api/send-email', {  // <-- IMPORTANT: You need to create this API route
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...formData,
+          to: targetEmail,  // Pass the target email
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', telephone: '', subject: '', message: '' }); // Clear form
+      } else {
+        const errorData = await response.json();
+        setStatus('error');
+        setErrorMessage(errorData.message || 'Failed to send email. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setStatus('error');
+      setErrorMessage('An unexpected error occurred. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="p-6 bg-white rounded-lg shadow-lg max-w-xl mx-auto">{/* Added mx-auto for centering */}
+      <h2 className="text-2xl font-bold mb-6 text-center text-[#ed253c]">Send An E-mail</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-[#ed253c] mb-1">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
+            placeholder="Your Name"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-[#ed253c] mb-1">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
+            placeholder="Your Email"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="telephone" className="block text-sm font-medium text-[#ed253c] mb-1">Telephone</label>
+          <input
+            type="tel"  // Use type="tel" for telephone numbers
+            id="telephone"
+            name="telephone"
+            value={formData.telephone}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
+            placeholder="Telephone"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="subject" className="block text-sm font-medium text-[#ed253c] mb-1">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
+            placeholder="Subject"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-[#ed253c] mb-1">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
+            placeholder="Your Message"
+            required
+          ></textarea>
+        </div>
+
+        {status === 'sending' && (
+          <p className="text-blue-600 text-center">Sending...</p>
+        )}
+
+        {status === 'success' && (
+          <p className="text-green-600 text-center">Message sent successfully!</p>
+        )}
+        
+        {status === 'error' && (
+          <p className="text-red-600 text-center">{errorMessage}</p>
+        )}
+        
+        <button
+          type="submit"
+          className="w-full bg-[#ed253c] text-white py-3 px-4 rounded-md font-semibold text-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+          disabled={status === 'sending'}
+        >
+          <svg className="w-5 h-5 transform rotate-45" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l4.41-1.103 5.076 2.839a1 1 0 001.262-1.262L10.894 2.553z"></path>
+          </svg>
+          Send
+        </button>
+      </form>
+    </div>
+  );
+};
+
 // New ContactUs Component
 const ContactUs: React.FC = () => {
   const specificLocationCoordinates = { lat: 29.969692312109558, lng: 31.2750723178029 };
@@ -376,6 +548,10 @@ const ContactUs: React.FC = () => {
       <h2 className="text-2xl font-semibold text-foreground m-0 text-[#ed253c]">CONTACT US</h2>
       </div>
 
+      <div className="mt-12 mb-12">
+        <EmailContactForm targetEmail = "nourmadyan3@gmail.com"/>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-7 items-center md:items-start justify-center">
         {/* Map Container - Replaced Image with a div for the map */}
         <div id="map" className="relative mt-5 left-6 w-full md:w-1/3 h-42 md:h-57 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
@@ -425,7 +601,7 @@ const Home: React.FC = () => {
           <TextWithLink
             text="New This Week!: "
             text2="New Legal Amends effecting workforce just got announced"
-            href="/about-us"   // Link to the blogs   abut us for trial
+            href="/blogs"   // Link to the blogs   about us for trial
           />   
         </div>
       </div>
