@@ -481,8 +481,8 @@ const OurClientsPage: React.FC = () => {
         /> */
 
         <div className='py-8 container mx-auto px-4 md:px-6 lg:px-8'>
-            <h1 className='text-3xl font-bold mb-8 text-center text-[#ed253c]'>Our Valued Partners</h1>
-            <p className='text-center text-lg text-gray-700 dark:text-gray-300 mb-12 max-w-3xl mx-auto'>
+            <h1 className='text-3xl font-bold mb-8 text-left text-[#000000]'>Our Valued Partners</h1>
+            <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-15'>
             Meet the dedicated professionals powering IBS—our team&apos;s expertise and passion bring our core values to life every day.Full and Updated Client List.
             </p>
 
