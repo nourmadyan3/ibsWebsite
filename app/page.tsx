@@ -208,22 +208,27 @@ const OurServices = () => {
     {
       title: 'Payroll',
       description: 'IBS manages the full payroll process, starting from the calculation of all earnings and deductions, to secure payment transfers to the employees and other official authorities. As well as providing detailed reports, invoices, and payment slips tailored to client needs, using a confidential digital system.',
-    },
-    {
-      title: 'Personnel',
-      description: 'We provide personnel with all onboarding and offboading process including; employment agreement, legal compliance, and vacation records, experience certificates and all necessary documents needed.',
+      href: '/services'
     },
     {
       title: 'Social Insurance',
       description: 'IBS manages all employee social insurance, providing authorized documentation and ensuring continuous updates in line with government regulations.',
-    },
-    {
-      title: 'Work Permit',
-      description: 'We handle work permits for expatriates, managing the full process from entry approval to final issuance, with renewals.',
+      href: '/services/social-insurance'
     },
     {
       title: 'Medical Insurance',
       description: 'IBS administers medical, life, and accident insurance plans based on client preferences through managing the issuance of the policies, renewals, claims and approvals.',
+      href: '/services/medical-insurance'
+    },
+    {
+      title: 'Personnel',
+      description: 'We provide personnel with all onboarding and offboading process including; employment agreement, legal compliance, and vacation records, experience certificates and all necessary documents needed.',
+      href: '/services/personnel-issues'
+    },
+    {
+      title: 'Work Permit',
+      description: 'We handle work permits for expatriates, managing the full process from entry approval to final issuance, with renewals.',
+      href: '/services/work-permits'
     },
   ];
 
@@ -239,7 +244,7 @@ const OurServices = () => {
             <span className="w-4 h-4 bg-[#ed253c] rounded-full flex-shrink-0 mt-1 md:mt-0"></span>
             <div className="flex flex-col md:flex-row md:items-center w-full gap-4">
               <a
-                href={`/services/${service.title.toLowerCase().replace(/\s+/g, '-')}`}
+                href={service.href}
                 className="text-lg font-semibold hover:text-[#ed253c] min-w-[140px] md:text-left md:pr-6 cursor-default"
                 style={{ flex: '0 0 180px' }}
               >
