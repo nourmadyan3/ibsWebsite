@@ -351,17 +351,27 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
     }
 
     try {
+      const mailOptions = {
+        from: formData.email, // this will be used as replyTo
+        to: 'nmohamed2399@gmail.com',
+        subject: formData.subject,
+        text: formData.message,
+        html: `
+          <p><strong>Name:</strong> ${formData.name}</p>
+          <p><strong>Email:</strong> ${formData.email}</p>
+          <p><strong>Telephone:</strong> ${formData.telephone}</p>
+          <p><strong>Message:</strong></p>
+          <p>${formData.message}</p>
+        `,
+      };
+
       // Replace with your actual API endpoint or third-party service call
-      // This is a placeholder for your backend logic to send the email
-      const response = await fetch('/api/send-email', {  // <-- IMPORTANT: You need to create this API route
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          to: targetEmail,  // Pass the target email
-        }),
+        body: JSON.stringify(mailOptions),
       });
 
       if (response.ok) {
