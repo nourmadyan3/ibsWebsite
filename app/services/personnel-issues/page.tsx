@@ -8,7 +8,8 @@ import OurServicesSection from '@/app/components/OurServicesSection';
 
 const personnelIssues: React.FC = () => {
     return (
-        <OurServicesSection
+        <div className='bg-[#fafafa] min-h-screen mx-auto px-4 md:px-6 lg:px-8'>
+            <OurServicesSection
             id='personnel-issues' // This ID is now more for internal reference than anchor linking 
             title='Personnel Issues'
             text={
@@ -32,6 +33,7 @@ const personnelIssues: React.FC = () => {
             }
             
         />
+        </div>
     );
 };
 

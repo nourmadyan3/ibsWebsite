@@ -42,7 +42,7 @@ const awardsAndCertificates: AwardCertificate[] = [
 
 const AwardsCertificatesPage: React.FC = () => {
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto  px-4 md:px-6 lg:px-8 py-8 bg-[#fafafa]">
             <h1 className="text-3xl font-bold text-[#000000] mb-8">Awards and Certificates</h1>
             <p className="text-[#828282] mb-12">
                 Over the years, IBS has been recognized for its excellence in HR outsourcing and commitment to quality. 

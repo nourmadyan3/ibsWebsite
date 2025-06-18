@@ -32,7 +32,6 @@ export default function RootLayout({
       { label: 'Our Services', href: '/services' },
       { label: 'Blog', href: '/blog' },
       { label: 'Careers', href: '/careers' },
-      { label: 'Contact', href: '/contact' },
     ];
   
   return (

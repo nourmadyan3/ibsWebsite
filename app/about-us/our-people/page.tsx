@@ -335,19 +335,19 @@ const OurPeoplePage: React.FC = () => {
     return (
         <>
             {/* Introductory section for Our People */}{/* Introductory section for Our People - Manual construction */}
-            <div id="our-people-intro" className="py-8">
+            <div id="our-people-intro" className="py-8 bg-[#fafafa] mx-auto px-4 md:px-6 lg:px-8">
                 <h2 className={cn(
-                    'text-2xl font-semibold mb-4 text-[#ed253c]',
+                    'text-2xl font-semibold mb-4 text-[#ed253c]' ,
                     'text-foreground',
                 )}>
                     OUR PEOPLE
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed ">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     Our team is our greatest asset. Composed of dedicated professionals with diverse expertise, we are committed to delivering exceptional service and fostering a collaborative environment. We believe in continuous learning and growth, empowering our employees to achieve their full potential.
                 </p>
 
                 {/* Team Image - Centered and below the text */}
-                <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden ">
+                <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
                     <Image
                         src={ourPeopleImage}
                         alt="Our Team"
@@ -364,7 +364,7 @@ const OurPeoplePage: React.FC = () => {
 
             {/* Section for grouped team members */}
             {groupTeamMembers.map((group, groupIndex) => (
-                <div key={`group-${groupIndex}`} className='py-8'>
+                <div key={`group-${groupIndex}`} className='py-8 bg-[#fafafa]'>
                     <h2 className='text-2xl font-semibold mb-8 text-center text-[#ed253c]'>{group.groupTitle}</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
                         {group.members.map((member, memberIndex) => (

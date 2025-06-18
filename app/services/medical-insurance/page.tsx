@@ -8,7 +8,8 @@ import OurServicesSection from '@/app/components/OurServicesSection';
 
 const socialInsurance: React.FC = () => {
     return (
-        <OurServicesSection
+        <div className='bg-[#fafafa] min-h-screen mx-auto px-4 md:px-6 lg:px-8'>
+            <OurServicesSection
             id='medical-insurance' // This ID is now more for internal reference than anchor linking 
             title='Medical Insurance'
             text={
@@ -35,6 +36,8 @@ const socialInsurance: React.FC = () => {
             }
             
         />
+        </div>
+        
     );
 };
 
