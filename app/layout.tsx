@@ -18,7 +18,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "IBS",
-  description: "",
+  description: "International Business Services",
+  icons: {
+    icon: '/images/Ibs-logo.png',
+    shortcut: '/images/Ibs-logo.png',
+    apple: '/images/Ibs-logo.png',
+  },
 };
 
 export default function RootLayout({

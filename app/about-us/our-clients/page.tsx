@@ -462,9 +462,9 @@ const OurClientsPage: React.FC = () => {
         ? clientIndusrtries
         : clientIndusrtries.filter(group => group.title === selectedIndustry);
 
-    const half = Math.ceil(filterdIndustries.length / 2);
-    const leftColumnIndustries = filterdIndustries.slice(0, half);
-    const rightColumnIndustries = filterdIndustries.slice(half);
+    // Split into left and right columns
+    const leftColumnIndustries = filterdIndustries.slice(0, 8);
+    const rightColumnIndustries = filterdIndustries.slice(5);
     
     // Console log to check what data is being filtered
     useEffect(() => {

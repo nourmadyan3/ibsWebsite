@@ -263,51 +263,55 @@ const OurServices = () => {
 
 // OurClients Component - Modified to create a seamless infinite loop effect for the logos
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
-  const totalLogos = clientLogos.length;
-
   return (
     <div className="py-8">
       <h2 className="text-2xl font-semibold mb-8 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
 
-        <div className="relative w-full overflow-hidden py-4">
-          <div className="flex items-center justify-center">
-          
-            <div className="flex flex-grow overflow-hidden justify-center items-center bg-white">
-              <div
-                className="flex logo-container"
-                style={{
-                  width: 'fit-content',
-                  animation: 'scroll 100s linear infinite',
-                }}
+      <div className="relative w-full overflow-hidden bg-white py-8">
+        <div className="flex w-full">
+          <div className="flex animate-marquee whitespace-nowrap">
+            {[...clientLogos, ...clientLogos, ...clientLogos, ...clientLogos].map((logo, index) => (
+              <div 
+                key={`logo-${index}`} 
+                className="mx-12 flex items-center justify-center"
+                style={{ minWidth: '200px' }}
               >
-                {[...clientLogos, ...clientLogos].map((logo, index) => (
-                  <div key={`logo-${index}`} className="flex-shrink-0 mx-8 relative w-[200px] h-[100px] flex items-center justify-center">
-                    <Image
-                      src={logo}
-                      alt={`Client Logo ${index + 1}`}
-                      width={180}
-                      height={80}
-                      style={{ objectFit: 'contain', maxHeight: '80px', maxWidth: '180px' }}
-                    />
-                  </div>
-                ))}
+                <Image
+                  src={logo}
+                  alt={`Client Logo ${index + 1}`}
+                  width={160}
+                  height={80}
+                  style={{ 
+                    objectFit: 'contain',
+                    maxHeight: '80px',
+                    maxWidth: '160px',
+                    filter: 'grayscale(0%)',
+                    opacity: '0.8'
+                  }}
+                />
               </div>
-            </div>
-
+            ))}
           </div>
+        </div>
       </div>
 
       <style jsx>{`
-        @keyframes scroll {
+        @keyframes marquee {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(-25%);
           }
         }
-      `}
-      </style>
+        .animate-marquee {
+          animation: marquee 80s linear infinite;
+          will-change: transform;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </div>
   );
 };
