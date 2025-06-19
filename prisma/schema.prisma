@@ -22,4 +22,23 @@ model Admin {
   email    String @unique
   password String
   name     String
+}
+
+model JobPost {
+  id              Int      @id @default(autoincrement())
+  code            String   // e.g. "353/01" (UI will show as 'Job Vacancy: (Code 353/01)')
+  text            String   // intro/summary
+  position        String
+  contractDuration String
+  field           String   // industry
+  workLocation    String
+  workingHours    String
+  daysOff         String
+  insurance       String   // yes/no or details
+  otherBenefits   String?  // additional benefits, optional
+  jobDescription  String   // use newlines or | as separators for bullet points
+  qualifications  String   // use newlines or | as separators for bullet points
+  howToApply      String   // email/instructions
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 } 
