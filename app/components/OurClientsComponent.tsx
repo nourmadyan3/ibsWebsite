@@ -28,7 +28,7 @@ const clienLogos = [
     '/images/logo19.jpg',
     '/images/logo20.jpg',
     '/images/logo21.jpg',
-    '/images/logo22.jpg',
+    '/images/metlife_logo.jpg',
     '/images/logo23.png',
     '/images/logo24.jpg',
 ];
@@ -40,7 +40,7 @@ const OurClientsComponent: React.FC = () => {
 
     return (
         <div className='py-8'>
-            <h2 className='text-2xl font-semibold mb-8 text-center text-[#ed253c]'>Our Clients</h2>
+            <h2 className='text-2xl font-semibold text-center text-[#ed253c]'>Our Clients</h2>
             
             {/* Display all logos in a responsive grid */}
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 items-center justify-items-center'>

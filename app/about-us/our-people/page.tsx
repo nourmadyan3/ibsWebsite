@@ -4,6 +4,7 @@ import React from 'react';
 //import AboutUsSection from '@/app/components/AboutUsSection';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import ScrollToTopButton from '@/app/components/ScrollToTopButton';
 //import { group } from 'console';
 
 // Dummy image imports
@@ -342,12 +343,12 @@ const OurPeoplePage: React.FC = () => {
                 )}>
                     OUR PEOPLE
                 </h2>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 text-justify">
                     Our team is our greatest asset. Composed of dedicated professionals with diverse expertise, we are committed to delivering exceptional service and fostering a collaborative environment. We believe in continuous learning and growth, empowering our employees to achieve their full potential.
                 </p>
 
                 {/* Team Image - Centered and below the text */}
-                <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
+                <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] lg:h-[250px] rounded-lg">
                     <Image
                         src={ourPeopleImage}
                         alt="Our Team"
@@ -390,6 +391,7 @@ const OurPeoplePage: React.FC = () => {
                     </div>
                 </div>
             ))}
+            <ScrollToTopButton />
         </>
     );
 };

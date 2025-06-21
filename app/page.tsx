@@ -61,7 +61,7 @@ const clientLogos = [
   '/images/logo19.jpg',
   '/images/logo20.jpg',
   '/images/logo21.jpg',
-  '/images/logo22.jpg',
+  '/images/metlife_logo.jpg',
   '/images/logo23.png',
   '/images/logo24.jpg',
 ]
@@ -173,30 +173,27 @@ const ImageSection: React.FC<ImageSectionProps> = ({ imageUrl, altText, title, d
 // AboutUs Component - Updated to include image and match new design
 const AboutUs: React.FC<AboutUsProps> = ({ text, imageUrl }) => {
   return (
-    <div className="py-8 bg-white relative w-full  overflow-hidden "> {/* Added relative, overflow-hidden */}
-      <div className=" top-12 right-1 w-full h-full z-0 "> {/* Added min-h for image container */}
-        
+    <div className="py-8 bg-white relative w-full overflow-hidden min-h-[350px]">
+      <div className="absolute top-16 right-0 w-full md:w-1/2 h-full z-0">
         <Image
           src={imageUrl}
           alt="About Us Illustration"
-          fill={true}
-          style={{objectFit: 'contain', objectPosition:'right'}}  //Use 'contain' to fit the whole image
-          className="w-full h-full opacity-30"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          layout="fill"
+          objectFit="contain"
+          objectPosition="right"
+          className="opacity-30 md:opacity-60"
         />
       </div>
 
-        <div className="relative z-0 lg:px-6 max-w-full md:max-w-[80%] lg:max-w-[90%]">  {/* Added text-left for text alignment */}
-        <h2 className={cn(
-          'text-2xl font-semibold mb-4 text-[#ed253c]'
-        )}
-        >
-          ABOUT US
-        </h2>
-
-        <p className="text-[#828282] dark:text-[#828282] leading-relaxed text-justify">
-          {text}
-        </p>
+      <div className="relative z-10 px-6 md:px-12">
+        <div className="md:w-3/3">
+          <h2 className="text-2xl font-semibold mb-4 ml-7 text-[#ed253c]">
+            ABOUT US
+          </h2>
+          <p className="text-[#828282] ml-7 leading-relaxed text-justify">
+            {text}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -239,14 +236,14 @@ const OurServices = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className={`flex flex-col md:flex-row items-center md:items-center gap-4 pb-6 ${index < services.length - 1 ? 'border-b border-[#bdbdbd]' : ''}`}
+            className={`flex flex-col md:flex-row items-center md:items-center gap-4 pb-3 ${index < services.length - 1 ? 'border-b border-[#bdbdbd]' : ''}`}
           >
             <span className="w-4 h-4 bg-[#ed253c] rounded-full flex-shrink-0 mt-1 md:mt-0"></span>
-            <div className="flex flex-col md:flex-row md:items-center w-full gap-4">
+            <div className="flex flex-col md:flex-row md:items-center w-full gap-6">
               <a
                 href={service.href}
-                className="text-lg font-semibold hover:text-[#ed253c] min-w-[140px] md:text-left md:pr-6 cursor-default"
-                style={{ flex: '0 0 180px' }}
+                className="text-lg font-semibold hover:text-[#ed253c] min-w-[140px] md:text-left cursor-default"
+                style={{ flex: '0 0 160px' }}
               >
                 {service.title}
               </a>
@@ -265,7 +262,7 @@ const OurServices = () => {
 const OurClients: React.FC<{ seeAll: boolean; setShowAll: (value: boolean) => void }> = ({ seeAll, setShowAll }) => {
   return (
     <div className="py-8">
-      <h2 className="text-2xl font-semibold mb-8 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
+      <h2 className="text-2xl font-semibold mb-8 ml-12 lg:px-6 text-left text-[#ed253c]">OUR CLIENTS</h2>
 
       <div className="relative w-full overflow-hidden bg-white py-8">
         <div className="flex w-full">
@@ -394,10 +391,10 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg max-w-xl mx-auto">{/* Added mx-auto for centering */}
+    <div className="p-6 bg-white rounded-lg shadow-lg max-w-xl ml-5">{/* Added mx-auto for centering */}
       <h2 className="text-2xl font-bold mb-6 text-center text-[#ed253c]">Send An E-mail</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 text-left">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-[#ed253c] mb-1">Name</label>
           <input
@@ -407,7 +404,7 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
             value={formData.name}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
-            placeholder="Your Name"
+            //placeholder="Your Name"
             required
           />
         </div>
@@ -421,7 +418,7 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
             value={formData.email}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
-            placeholder="Your Email"
+            //placeholder="Your Email"
             required
           />
         </div>
@@ -435,7 +432,7 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
             value={formData.telephone}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
-            placeholder="Telephone"
+            //placeholder="Telephone"
           />
         </div>
 
@@ -448,7 +445,7 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
             value={formData.subject}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
-            placeholder="Subject"
+            //placeholder="Subject"
             required
           />
         </div>
@@ -461,7 +458,7 @@ const EmailContactForm: React.FC<EmailContactFormProps> = ({ targetEmail }) => {
             value={formData.message}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#ed253c] focus:border-[#ed253c] sm:text-sm"
-            placeholder="Your Message"
+            //placeholder="Your Message"
             required
           ></textarea>
         </div>
@@ -560,37 +557,36 @@ const ContactUs: React.FC = () => {
   }, [specificLocationCoordinates, addressString]);
 
   return (
-    <div className="py-8 text-center ">
+    <div className="py-8">
       {/* Wrapper div for the heading to apply borders */}
       {/* Added w-fit and mx-auto to control the line length and center it */}
       <div className="border-t border-b border-[#000000] py-4 mb-8 mt-0 w-fit mx-auto">
-      <h2 className="text-2xl font-semibold text-foreground m-0 text-[#ed253c]">CONTACT US</h2>
+        <h2 className="text-2xl font-semibold text-foreground m-0 text-[#ed253c]">CONTACT US</h2>
       </div>
 
-      <div className="mt-12 mb-12">
-        <EmailContactForm targetEmail = "nourmadyan3@gmail.com"/>
-      </div>
+      {/* Flex row for form and map/info */}
+      <div className="flex flex-col md:flex-row gap-8 items-start justify-center w-full">
+        {/* Email Form */}
+        <div className="w-full md:w-1/2">
+          <EmailContactForm targetEmail = "nourmadyan3@gmail.com"/>
+        </div>
 
-      <div className="flex flex-col md:flex-row gap-7 items-center md:items-start justify-center">
-        {/* Map Container - Replaced Image with a div for the map */}
-        <div id="map" className="relative mt-5 left-6 w-full md:w-1/3 h-42 md:h-57 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
-          {/* Fallback text if map doesn't load */}
-          Loading Map...
-        </div> 
-
-        {/* Working Hours & Address */}
-        <div className="md:w-1/3 text-left p-4">
-        <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-7">
-      CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c] ">19786</span>
-      </p>
-          <h3 className="text-xl font-semibold mb-2 text-foreground">Working Hours</h3>
-          <p className="text-[#828282] text-sm">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
-          <p className="text-[#828282] text-sm">Friday - Saturday: Closed</p>
-          <h3 className="text-xl font-semibold mt-7 mb-2 text-foreground">Address</h3>
-          {/* <p className="text-[#828282] ">2261 New Maadi, Cairo, Egypt</p>
-          <p className="text-[#828282] ">Al Nahda Al Gadida, Maadi</p> */}
-          <p className="text-[#828282] text-sm">New Maadi, 10 Street 261, Ezbet Fahmy</p>
-          <p className="text-[#828282] text-sm">El Basatin, Cairo Governorate</p>
+        {/* Map and Info */}
+        <div className="w-full md:w-1/3 flex flex-col gap-2">
+          <div id="map" className="relative w-full h-64 rounded-lg shadow-lg overflow-hidden bg-[#828282] flex items-center justify-center text-[#000000]">
+            Loading Map...
+          </div>
+          <div className="text-left p-2">
+            <p className="text-xl font-bold text-[#000000] dark:text-[#000000] mb-5">
+              CALL US ON <span className="text-xl font-bold text-[#ed253c] dark:text-[#ed253c] ">19786</span>
+            </p>
+            <h3 className="text-xl font-semibold mb-2 text-foreground">Working Hours</h3>
+            <p className="text-[#828282] text-sm">Sunday - Thursday: 9:00 AM - 5:00 PM</p>
+            <p className="text-[#828282] text-sm">Friday - Saturday: Closed</p>
+            <h3 className="text-xl font-semibold mt-5 mb-2 text-foreground">Address</h3>
+            <p className="text-[#828282] text-sm">New Maadi, 10 Street 261, Ezbet Fahmy</p>
+            <p className="text-[#828282] text-sm">El Basatin, Cairo Governorate</p>
+          </div>
         </div>
       </div>
     </div>
@@ -650,16 +646,19 @@ const Home: React.FC = () => {
 
       {/* Replaced OurClients component with a simple link/button to the dedicated Clients page */}
       <OurClients seeAll={seeAll} setShowAll={setSeeAll} />
-      <div className="py-8 text-center">
+      <div className="text-center py-2">
       <Link href="/about-us/our-clients" passHref>
-                        <Button variant="default" className="px-8 py-3 text-lg font-semibold">
+                        <Button variant="default" className="px-8 py-1 text-lg font-semibold">
                             VIEW ALL CLIENTS
                         </Button>
                     </Link>
       </div>
       
       {/* Contact Us Section */}
+      <div className="py-8">
       <ContactUs />
+      </div>
+      
       
     </div>
   );

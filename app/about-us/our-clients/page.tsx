@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import ScrollToTopButton from '@/app/components/ScrollToTopButton';
 
 
 
@@ -487,7 +488,7 @@ const OurClientsPage: React.FC = () => {
             </p>
 
             {/* Tab/Button Navigation for Industry Filter - This comes AFTER the title and intro text */}
-            <div className='flex flex-wrap justify-between gap-2 mb-8 border-b border-gray-200 pb-4'>
+            <div className='flex flex-wrap justify-center gap-1.5 mb-5 border-b border-gray-200 pb-5'>
                 <button
                     onClick={() => setSelectedIndustry('All Industries')}
                     className={cn(
@@ -539,13 +540,15 @@ const OurClientsPage: React.FC = () => {
 
             {/* Grid container for the industry columns */}
             {filterdIndustries.length > 0 ? (
-                <div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-8'>
+                <div className='grid grid-cols-1 md:grid-cols-2'>
                     <div className='md:border-r md:border-gray-200 pr-4'>
                         {leftColumnIndustries.map((group) => (
                             <div key={group.title} className='mb-8'>
-                                <h2 className='bg-[#ed253c] text-white text-lg font-semibold py-2 px-4 rounded-t-md mb-2'>
-                                    {group.title}
-                                </h2>
+                                <div className="flex flex-col items-center mb-2">
+                                    <div className="w-full h-0.5 bg-[#ed253c] mb-1"></div>
+                                    <h2 className="text-lg font-bold text-[#ed253c] text-center">{group.title}</h2>
+                                    <div className="w-full h-0.5 bg-[#ed253c] mt-1"></div>
+                                </div>
                                 <ul className='bg-white rounded-b-md shadow-md overflow-hidden'>
                                     {group.clients.map((client, clientIndex) => (
                                         <li
@@ -565,9 +568,11 @@ const OurClientsPage: React.FC = () => {
                     <div className='pl-4'>
                         {rightColumnIndustries.map((group) => (
                             <div key={group.title} className='mb-8'>
-                                <h2 className='bg-[#ed253c] text-white text-lg font-semibold py-2 px-4 rounded-t-md mb-2'>
-                                    {group.title}
-                                </h2>
+                                <div className="flex flex-col items-center mb-2">
+                                    <div className="w-full h-0.5 bg-[#ed253c] mb-1"></div>
+                                    <h2 className="text-lg font-bold text-[#ed253c] text-center">{group.title}</h2>
+                                    <div className="w-full h-0.5 bg-[#ed253c] mt-1"></div>
+                                </div>
                                 <ul className='bg-white rounded-b-md shadow-md overflow-hidden'>
                                     {group.clients.map((client, clientIndex) => (
                                         <li
@@ -591,6 +596,7 @@ const OurClientsPage: React.FC = () => {
                     </div>
                     
             )}
+             <ScrollToTopButton />
         </div>
     );
 };
