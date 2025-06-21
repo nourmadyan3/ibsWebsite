@@ -19,6 +19,7 @@ interface IndustryGroup {
 const OurClientsPage: React.FC = () => {
     const [industryGroups, setIndustryGroups] = useState<IndustryGroup[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchIndustryGroups = async () => {
@@ -37,16 +38,56 @@ const OurClientsPage: React.FC = () => {
         fetchIndustryGroups();
     }, []);
 
+    const displayedGroups = selectedGroupId
+        ? industryGroups.filter((group) => group.id === selectedGroupId)
+        : industryGroups;
+
+    // --- Configuration for column split ---
+    // To change the number of groups in the left column, modify the number below.
+    // If you set it to null, it will split the groups as evenly as possible.
+    const specifiedLeftCount: number | null = null;
+    // --- End Configuration ---
+
+    const leftColumnCount = specifiedLeftCount ?? Math.ceil(displayedGroups.length /3);
+
     // Split into left and right columns
-    const leftColumnIndustries = industryGroups.slice(0, Math.ceil(industryGroups.length / 2));
-    const rightColumnIndustries = industryGroups.slice(Math.ceil(industryGroups.length / 2));
+    const leftColumnIndustries = displayedGroups.slice(0, leftColumnCount);
+    const rightColumnIndustries = displayedGroups.slice(leftColumnCount);
     
     return (
         <div className='py-8 container mx-auto px-4 md:px-6 lg:px-8 bg-[#fafafa]'>
             <h1 className='text-3xl font-bold mb-8 text-left text-[#000000]'>Our Valued Partners</h1>
-            <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-15'>
-                Meet the dedicated professionals powering IBS—our team`apos;s` expertise and passion bring our core values to life every day. Full and Updated Client List.
+            <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-8'>
+                Meet the dedicated professionals powering IBS—our team&apos;s expertise and passion bring our core values to life every day. Full and Updated Client List.
             </p>
+
+            <div className="flex flex-wrap justify-center gap-1.5 mb-12">
+                <button
+                    onClick={() => setSelectedGroupId(null)}
+                    className={cn(
+                        "px-4 py-2 rounded-full font-semibold transition",
+                        selectedGroupId === null
+                            ? "bg-[#ed253c] text-white"
+                            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    )}
+                >
+                    All
+                </button>
+                {industryGroups.map((group) => (
+                    <button
+                        key={group.id}
+                        onClick={() => setSelectedGroupId(group.id)}
+                        className={cn(
+                            "px-4 py-2 rounded-full font-semibold transition",
+                            selectedGroupId === group.id
+                                ? "bg-[#ed253c] text-white"
+                                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                        )}
+                    >
+                        {group.name}
+                    </button>
+                ))}
+            </div>
 
             {loading ? (
                 <p className='text-center text-gray-600 text-xl mt-12'>Loading clients...</p>
