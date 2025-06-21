@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.10.0",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@vercel/blob": "^1.1.1",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
     "framer-motion": "^12.12.1",

@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ManageOurPeoplePage from "./our-people/page";
+import ManageOurClientsPage from "./our-clients/page";
 
 interface BlogPost {
   id: number;
@@ -37,7 +39,7 @@ const AdminDashboard: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [editPost, setEditPost] = useState<BlogPost | null>(null);
-  const [activeTab, setActiveTab] = useState<'blog' | 'careers'>('blog');
+  const [activeTab, setActiveTab] = useState<'blog' | 'careers' | 'our-people' | 'our-clients'>('blog');
   const [jobs, setJobs] = useState<JobPost[]>([]);
   const [isJobsLoading, setIsJobsLoading] = useState(true);
   const [showJobModal, setShowJobModal] = useState(false);
@@ -214,44 +216,55 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-[#ed253c]">Admin Dashboard</h1>
+    <div className="min-h-screen bg-gray-100">
+      <div className="flex justify-between items-center p-4 bg-white shadow-md">
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
+      <div className="p-4">
+        <div className="flex space-x-4 mb-4">
           <button
-            onClick={handleLogout}
-            className="bg-[#ed253c] text-white px-4 py-2 rounded hover:bg-[#c41e32]"
-          >
-            Logout
-          </button>
-        </div>
-        {/* Tabs */}
-        <div className="flex space-x-4 mb-8">
-          <button
-            className={`px-4 py-2 rounded font-semibold ${activeTab === 'blog' ? 'bg-[#ed253c] text-white' : 'bg-white text-[#ed253c] border border-[#ed253c]'}`}
             onClick={() => setActiveTab('blog')}
+            className={`px-4 py-2 rounded ${activeTab === 'blog' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           >
-            Blog Posts
+            Blog
           </button>
           <button
-            className={`px-4 py-2 rounded font-semibold ${activeTab === 'careers' ? 'bg-[#ed253c] text-white' : 'bg-white text-[#ed253c] border border-[#ed253c]'}`}
             onClick={() => setActiveTab('careers')}
+            className={`px-4 py-2 rounded ${activeTab === 'careers' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           >
             Careers
           </button>
+          <button
+            onClick={() => setActiveTab('our-people')}
+            className={`px-4 py-2 rounded ${activeTab === 'our-people' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            Our People
+          </button>
+          <button
+            onClick={() => setActiveTab('our-clients')}
+            className={`px-4 py-2 rounded ${activeTab === 'our-clients' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            Our Clients
+          </button>
         </div>
-        {/* Blog Posts Tab */}
-        {activeTab === 'blog' && (
-          <>
-            {/* Add New Post Button */}
-            <button
-              onClick={() => setShowModal(true)}
-              className="mb-6 bg-[#ed253c] text-white px-4 py-2 rounded hover:bg-[#c41e32]"
-            >
-              Add New Post
-            </button>
 
-            {/* Modal for Add Post */}
+        {activeTab === 'blog' && (
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Blog Posts</h2>
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-[#ed253c] text-white px-4 py-2 rounded hover:bg-[#c41e32]"
+              >
+                Add New Post
+              </button>
+            </div>
             {showModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
@@ -282,8 +295,6 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
             )}
-
-            {/* Posts List */}
             <div className="bg-white rounded-lg shadow">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">Blog Posts</h2>
@@ -325,9 +336,9 @@ const AdminDashboard: React.FC = () => {
                 )}
               </div>
             </div>
-          </>
+          </div>
         )}
-        {/* Careers Tab */}
+
         {activeTab === 'careers' && (
           <div className="bg-white rounded-lg shadow">
             <div className="p-6">
@@ -340,7 +351,6 @@ const AdminDashboard: React.FC = () => {
                   Add New Job
                 </button>
               </div>
-              {/* Modal for Add/Edit Job */}
               {showJobModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
                   <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative">
@@ -368,7 +378,6 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
               )}
-              {/* Jobs List */}
               {isJobsLoading ? (
                 <div>Loading...</div>
               ) : jobs.length === 0 ? (
@@ -403,6 +412,9 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'our-people' && <ManageOurPeoplePage />}
+        {activeTab === 'our-clients' && <ManageOurClientsPage />}
       </div>
     </div>
   );
